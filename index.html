@@ -1,43 +1,26 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Ferienwohnung am See</title>
-  <link rel="stylesheet" href="styles.css">
+
+  <!-- Bootstrap 5.3 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Eigene Styles (nach Bootstrap, damit sie Vorrang haben) -->
+  <link href="styles.css" rel="stylesheet">
 </head>
 <body>
-  <header>
+
+  <main class="container py-5">
     <h1>Ferienwohnung am See</h1>
-    <nav>
-      <a href="#wohnung">Die Wohnung</a>
-      <a href="#preise">Preise</a>
-      <a href="#kontakt">Kontakt</a>
-    </nav>
-  </header>
-
-  <main>
-    <section id="wohnung">
-      <h2>Die Wohnung</h2>
-      <p>Gemütliche 3-Zimmer-Wohnung für bis zu 4 Personen, mit Balkon und Seesicht.</p>
-    </section>
-
-    <section id="preise">
-      <h2>Preise</h2>
-      <p>Ab CHF 120.– pro Nacht.</p>
-    </section>
-
-    <section id="kontakt">
-      <h2>Kontakt</h2>
-      <p>Interesse? Schreiben Sie uns.</p>
-      <button id="btn-anfrage">Anfrage senden</button>
-    </section>
   </main>
 
-  <footer>
-    <p>&copy; 2026 Ferienwohnung am See</p>
-  </footer>
-
+  <!-- jQuery -->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+  <!-- Bootstrap 5.3 JS (inkl. Popper) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Eigenes Script -->
   <script src="app.js"></script>
 </body>
 </html>
