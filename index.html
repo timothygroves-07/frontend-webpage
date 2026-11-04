@@ -3,7 +3,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Ferienwohnung am See</title>
+  <title>Wohnung 4b · Ferienwohnung mit grüner Tür</title>
+  <meta name="description" content="Ferienwohnung im 4. Stock, ohne Lift, mit Plattenspieler, Dachfenster und einer Nachbarskatze namens Gertrud.">
+
+  <!-- Schriften -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,700;1,9..144,400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 
   <!-- Bootstrap 5.3 CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -12,9 +18,318 @@
 </head>
 <body>
 
-  <main class="container py-5">
-    <h1>Ferienwohnung am See</h1>
+  <!-- Laufband -->
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker-track">
+      <span>✶ kein Lift, dafür Cardio inklusive</span>
+      <span>✶ Wasserkocher pfeift in Fis</span>
+      <span>✶ WLAN heisst „nicht_das_wlan_vom_nachbarn“</span>
+      <span>✶ 37 Schallplatten, keine davon von Ed Sheeran</span>
+      <span>✶ Gertrud kommt um 18:40 Uhr vorbei</span>
+      <span>✶ kein Lift, dafür Cardio inklusive</span>
+      <span>✶ Wasserkocher pfeift in Fis</span>
+      <span>✶ WLAN heisst „nicht_das_wlan_vom_nachbarn“</span>
+      <span>✶ 37 Schallplatten, keine davon von Ed Sheeran</span>
+      <span>✶ Gertrud kommt um 18:40 Uhr vorbei</span>
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-md sticky-top">
+    <div class="container">
+      <a class="navbar-brand" href="#">Wohnung&nbsp;4b</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Navigation öffnen">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="nav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="#galerie">Fotos</a></li>
+          <li class="nav-item"><a class="nav-link" href="#wohnung">Die Wohnung</a></li>
+          <li class="nav-item"><a class="nav-link" href="#inventar">Inventar</a></li>
+          <li class="nav-item"><a class="nav-link" href="#extras">Extras</a></li>
+          <li class="nav-item"><a class="nav-link" href="#regeln">Hausregeln</a></li>
+          <li class="nav-item"><a class="nav-link nav-cta" href="#buchen">Buchen</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+
+    <!-- Hero -->
+    <header class="hero container">
+      <div class="row align-items-center g-5">
+        <div class="col-lg-7">
+          <p class="eyebrow">Ferienwohnung · 4. Stock · ohne Lift · Zürich-ish</p>
+          <h1 class="display-title">Eine Wohnung für Leute, die beim Check-in zuerst die <em>Plattensammlung</em> anschauen.</h1>
+          <p class="lead mt-4">48 m², ein Dachfenster, durch das man genau einen Stern sieht, und eine grüne Tür, die man etwas anheben muss. Kein Design-Hotel. Eher ein Lieblingspulli mit Schlüssel.</p>
+          <div class="d-flex flex-wrap gap-3 mt-4">
+            <a href="#buchen" class="btn btn-niche btn-lg">Anfragen</a>
+            <a href="#inventar" class="btn btn-outline-niche btn-lg">Was ist alles da?</a>
+          </div>
+        </div>
+        <div class="col-lg-5">
+          <div class="polaroid">
+            <img class="polaroid-img" src="img/tuer.jpg" alt="Alte grüne Holztür in einer Steinmauer" width="675" height="1200">
+            <p class="polaroid-caption">die grüne Tür, Oktober</p>
+          </div>
+          <div class="stamp" aria-hidden="true">kein<br>Lift</div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Kennzahlen -->
+    <section class="container facts">
+      <div class="row g-3 text-center">
+        <div class="col-6 col-md-3"><div class="fact"><span class="fact-num">48</span><span class="fact-label">m² Altbau</span></div></div>
+        <div class="col-6 col-md-3"><div class="fact"><span class="fact-num">84</span><span class="fact-label">Treppenstufen</span></div></div>
+        <div class="col-6 col-md-3"><div class="fact"><span class="fact-num">2</span><span class="fact-label">Gäste, max.</span></div></div>
+        <div class="col-6 col-md-3"><div class="fact"><span class="fact-num">1</span><span class="fact-label">Stern sichtbar</span></div></div>
+      </div>
+    </section>
+
+    <!-- Galerie -->
+    <section id="galerie" class="gallery-section">
+      <div class="container">
+        <p class="eyebrow mb-2">Beweisfotos</p>
+        <h2 class="section-title mb-5">Alles echt. Fast alles.</h2>
+        <div class="gallery">
+          <figure class="gallery-item tilt-1" data-caption="Der Plattenspieler. Nicht von 1979, aber er tut so.">
+            <img src="img/plattenspieler.jpg" alt="Retro-Plattenspieler neben einer Zimmerpflanze" loading="lazy" width="1200" height="800">
+            <figcaption>Wohnzimmer, Seite A</figcaption>
+          </figure>
+          <figure class="gallery-item tilt-2 tall" data-caption="Das Dachfenster. Der Stern ist tagsüber im Urlaub.">
+            <img src="img/dachfenster.jpg" alt="Blick durch ein schmales Dachfenster in den Himmel" loading="lazy" width="800" height="1200">
+            <figcaption>der eine Stern (tagsüber)</figcaption>
+          </figure>
+          <figure class="gallery-item tilt-3" data-caption="Die Bialetti. Bitte nicht in den Geschirrspüler, sie ist empfindlich.">
+            <img src="img/bialetti.jpg" alt="Rote Bialetti Moka-Kanne auf einem Gasherd" loading="lazy" width="1200" height="901">
+            <figcaption>Küche, 07:12 Uhr</figcaption>
+          </figure>
+          <figure class="gallery-item tilt-4" data-caption="Herbert. Wurde letzten Dienstag gegossen und sieht entsprechend zufrieden aus.">
+            <img src="img/herbert.jpg" alt="Monstera-Pflanze vor einer hellblauen Wand" loading="lazy" width="1200" height="800">
+            <figcaption>Herbert, Monstera, Dienstagstyp</figcaption>
+          </figure>
+          <figure class="gallery-item tilt-5" data-caption="Gertrud. Kommt um 18:40 Uhr. Tut so, als wäre es Zufall.">
+            <img src="img/gertrud.jpg" alt="Dreifarbige Katze döst auf einem Fenstersims" loading="lazy" width="1200" height="675">
+            <figcaption>Gertrud, 18:41 Uhr</figcaption>
+          </figure>
+        </div>
+        <p class="gallery-hint">Klick auf ein Foto für die Grossansicht.</p>
+      </div>
+    </section>
+
+    <!-- Die Wohnung -->
+    <section id="wohnung" class="container section">
+      <div class="row g-5">
+        <div class="col-lg-4">
+          <h2 class="section-title">Die Wohnung</h2>
+          <p class="text-muted-niche">Kurz gesagt: klein, warm, etwas schief.</p>
+        </div>
+        <div class="col-lg-8">
+          <div class="row g-4">
+            <div class="col-md-6">
+              <div class="card-niche h-100">
+                <h3>Wohnzimmer</h3>
+                <p>Ein Sofa, das nach Bibliothek riecht. Ein Plattenspieler von 1979. Eine Leselampe mit genau drei Helligkeitsstufen: Kerze, Krimi und Verhör.</p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card-niche h-100">
+                <h3>Schlafzimmer</h3>
+                <p>Doppelbett unter der Dachschräge. Wer über 1.85 m ist, lernt hier Demut. Das Dachfenster lässt sich öffnen, der Stern bleibt.</p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card-niche h-100">
+                <h3>Küche</h3>
+                <p>Zwei Herdplatten, eine Bialetti, ein Wasserkocher, der in Fis pfeift. Gewürzregal sortiert nach Gefühl, nicht nach Alphabet.</p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card-niche h-100">
+                <h3>Bad</h3>
+                <p>Dusche mit gutem Wasserdruck (wichtig, wir wissen es). Handtücher in einer Farbe, die der Hersteller „Hafernebel“ nennt.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Inventar -->
+    <section id="inventar" class="section section-alt">
+      <div class="container">
+        <div class="row g-5">
+          <div class="col-lg-4">
+            <h2 class="section-title">Inventar</h2>
+            <p class="text-muted-niche">Die Dinge, nach denen niemand fragt, die aber alle bemerken.</p>
+          </div>
+          <div class="col-lg-8">
+            <ul class="inventory">
+              <li><span>Schallplatten</span><span class="dots"></span><span>37 Stück</span></li>
+              <li><span>davon Jazz, den niemand kennt</span><span class="dots"></span><span>11</span></li>
+              <li><span>Brettspiele mit allen Teilen</span><span class="dots"></span><span>3 von 4</span></li>
+              <li><span>Zimmerpflanze „Herbert“ (giessen: Dienstag)</span><span class="dots"></span><span>1</span></li>
+              <li><span>Taschenbücher mit Eselsohren</span><span class="dots"></span><span>ca. 60</span></li>
+              <li><span>Kaffeetassen, alle verschieden</span><span class="dots"></span><span>9</span></li>
+              <li><span>Regenschirm, leicht verbogen</span><span class="dots"></span><span>1</span></li>
+              <li><span>Fernseher</span><span class="dots"></span><span>bewusst 0</span></li>
+            </ul>
+            <div class="funfact mt-4">
+              <span class="funfact-label">Fun Fact</span>
+              <p id="funfact-text" class="mb-0">Der Vormieter hat die Wand im Flur „Salbei“ gestrichen. Es ist eher Pistazie.</p>
+              <button id="btn-funfact" class="btn btn-sm btn-outline-niche mt-3" type="button">noch einer</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Extras: Platzhalter für die API-Features -->
+    <section id="extras" class="container section">
+      <h2 class="section-title">Extras</h2>
+      <p class="text-muted-niche mb-4">Kleine Dienste für deinen Aufenthalt. Werden gerade gebaut.</p>
+
+      <div class="row g-4">
+        <!-- a) Katzenbild -->
+        <div class="col-md-6 col-xl-4">
+          <div class="card-niche feature h-100">
+            <span class="badge-soon">bald</span>
+            <h3>Gertrud-Ersatz</h3>
+            <p>Die Nachbarskatze kommt nur um 18:40 Uhr. Für alle anderen Zeiten: eine zufällige Katze.</p>
+            <div id="cat-result" class="placeholder-box">Hier erscheint ein Katzenbild</div>
+            <button id="btn-cat" class="btn btn-outline-niche mt-3" type="button" disabled>Katze anfordern</button>
+          </div>
+        </div>
+
+        <!-- b) Bitcoin -->
+        <div class="col-md-6 col-xl-4">
+          <div class="card-niche feature h-100">
+            <span class="badge-soon">bald</span>
+            <h3>Bitcoin-Kurs</h3>
+            <p>Wir akzeptieren keine Bitcoins. Aber falls du beim Frühstück flexen willst: der aktuelle Kurs in USD und CHF.</p>
+            <div id="btc-result" class="placeholder-box">USD: ... · CHF: ...</div>
+            <button id="btn-btc" class="btn btn-outline-niche mt-3" type="button" disabled>Kurs laden</button>
+          </div>
+        </div>
+
+        <!-- c) Wetter -->
+        <div class="col-md-6 col-xl-4">
+          <div class="card-niche feature h-100">
+            <span class="badge-soon">bald</span>
+            <h3>Dachfenster-Wetter</h3>
+            <p>Ob du das Fenster heute offen lassen kannst. Zürich, Höchst- und Tiefstwert, Niederschlag.</p>
+            <div id="weather-result" class="placeholder-box">Tmax ... · Tmin ... · Regen ...</div>
+            <button id="btn-weather" class="btn btn-outline-niche mt-3" type="button" disabled>Wetter abrufen</button>
+          </div>
+        </div>
+
+        <!-- d) Ladestationen -->
+        <div class="col-md-6 col-xl-6">
+          <div class="card-niche feature h-100">
+            <span class="badge-soon">bald</span>
+            <h3>Strom für dein Auto</h3>
+            <p>Die fünf nächsten Ladestationen. Für den Fall, dass du nicht mit dem Velo kommst (verständlich, 84 Stufen).</p>
+            <ol id="charger-result" class="placeholder-box placeholder-list">
+              <li>Ladestation ...</li>
+              <li>Ladestation ...</li>
+              <li>Ladestation ...</li>
+            </ol>
+            <button id="btn-charger" class="btn btn-outline-niche mt-3" type="button" disabled>Ladestationen suchen</button>
+          </div>
+        </div>
+
+        <!-- e) Karte -->
+        <div class="col-md-12 col-xl-6">
+          <div class="card-niche feature h-100">
+            <span class="badge-soon">bald</span>
+            <h3>Wo ist die grüne Tür?</h3>
+            <p>Kartenausschnitt mit der Wohnung in der Mitte. Die Tür selbst sieht man leider nicht.</p>
+            <div id="map" class="placeholder-box placeholder-map">Hier erscheint die Karte</div>
+            <button id="btn-map" class="btn btn-outline-niche mt-3" type="button" disabled>Karte zeigen</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Hausregeln -->
+    <section id="regeln" class="section section-alt">
+      <div class="container">
+        <div class="row g-5">
+          <div class="col-lg-4">
+            <h2 class="section-title">Hausregeln</h2>
+            <p class="text-muted-niche">Wenige, aber ernst gemeint.</p>
+            <figure class="wanted mt-4">
+              <img src="img/gertrud.jpg" alt="Gertrud, die Nachbarskatze" loading="lazy" width="1200" height="675">
+              <figcaption><strong>Gesucht:</strong> niemand. Gertrud findet dich.</figcaption>
+            </figure>
+          </div>
+          <div class="col-lg-8">
+            <ol class="rules">
+              <li>Die grüne Tür beim Schliessen leicht anheben. Sie dankt es dir.</li>
+              <li>Platten zurück in die Hülle, Hülle zurück ins Regal, Regal bleibt, wo es ist.</li>
+              <li>Gertrud darf rein. Gertrud darf nicht gefüttert werden. Gertrud wird so tun, als wüsstest du das nicht.</li>
+              <li>Ab 22 Uhr leise. Frau Huber im 3. Stock hört alles, ausser die Türklingel.</li>
+              <li>Herbert am Dienstag giessen. Nicht am Mittwoch. Herbert merkt das.</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Buchen -->
+    <section id="buchen" class="container section">
+      <div class="ticket">
+        <div class="ticket-main">
+          <p class="eyebrow mb-2">Preise</p>
+          <h2 class="section-title mb-3">CHF 118.– pro Nacht</h2>
+          <p class="mb-1">Mindestens 2 Nächte. Ab 7 Nächten gibt es eine Platte geschenkt, du darfst sie aussuchen (fast alle).</p>
+          <p class="text-muted-niche mb-0">Endreinigung CHF 40.–, Bettwäsche und Hafernebel-Handtücher inklusive.</p>
+        </div>
+        <div class="ticket-stub">
+          <p class="stub-label">Anfrage</p>
+          <p class="stub-text">Das Formular kommt bald. Bis dahin freut sich die Tür auf dich.</p>
+          <button id="btn-anfrage" class="btn btn-niche w-100" type="button">Anfrage senden</button>
+        </div>
+      </div>
+    </section>
+
   </main>
+
+  <footer class="footer">
+    <div class="container d-flex flex-column flex-md-row justify-content-between gap-2">
+      <span>© 2026 Wohnung 4b · Schulprojekt Modul 293</span>
+      <span class="text-muted-niche">Gebaut mit Bootstrap, jQuery und zu viel Kaffee aus der Bialetti.</span>
+    </div>
+    <div class="container credits">
+      Fotos von Unsplash:
+      <a href="https://unsplash.com/photos/an-old-stone-building-with-a-green-door-Q5RIU3jV4ww" target="_blank" rel="noopener">Tür</a> ·
+      <a href="https://unsplash.com/photos/plant-beside-vinyl-player-nVn6HSRQVVk" target="_blank" rel="noopener">Plattenspieler</a> ·
+      <a href="https://unsplash.com/photos/a-room-with-a-skylight-and-a-white-wall-XANoMMqjmNc" target="_blank" rel="noopener">Dachfenster</a> ·
+      <a href="https://unsplash.com/photos/red-and-silver-coffee-maker-wdF9uixHV-A" target="_blank" rel="noopener">Bialetti</a> ·
+      <a href="https://unsplash.com/photos/a-monstera-plant-sits-in-a-corner-McbXDs7bYNU" target="_blank" rel="noopener">Herbert</a> ·
+      <a href="https://unsplash.com/photos/a-calico-cat-sitting-on-a-window-sill-RkaUK-s43Gc" target="_blank" rel="noopener">Gertrud</a>
+    </div>
+  </footer>
+
+  <!-- Lightbox für die Galerie -->
+  <div class="modal fade" id="lightbox" tabindex="-1" aria-labelledby="lightbox-caption" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+      <div class="modal-content lightbox-content">
+        <button type="button" class="btn-close btn-close-white lightbox-close" data-bs-dismiss="modal" aria-label="Schliessen"></button>
+        <img id="lightbox-img" src="" alt="">
+        <p id="lightbox-caption" class="lightbox-caption"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast für kleine Rückmeldungen -->
+  <div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div id="toast" class="toast toast-niche" role="status" aria-live="polite" aria-atomic="true">
+      <div class="toast-body" id="toast-text"></div>
+    </div>
+  </div>
 
   <!-- jQuery -->
   <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
