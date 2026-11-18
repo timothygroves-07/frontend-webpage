@@ -407,6 +407,37 @@ main, nav, footer, .ticker { position: relative; z-index: 1; }
   color: var(--paper);
   padding: .2rem .5rem;
 }
+.badge-live {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-family: var(--font-mono);
+  font-size: .7rem;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  background: var(--door);
+  color: var(--paper);
+  padding: .2rem .5rem;
+}
+
+/* Ergebnis: Katzenbild */
+.placeholder-box.has-image {
+  padding: 0;
+  border-style: solid;
+  border-color: var(--ink);
+}
+.cat-img {
+  display: block;
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  animation: reinpoppen .4s ease-out;
+}
+@keyframes reinpoppen {
+  from { opacity: 0; transform: scale(.96); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
 .placeholder-box {
   border: 2px dashed var(--line);
   padding: 1rem;

@@ -40,6 +40,43 @@ $(function () {
       lightbox.show();
     });
 
+  // =========================================================
+  // a) Zufälliges Katzenbild (The Cat API)
+  // =========================================================
+  const CAT_API_URL = 'https://api.thecatapi.com/v1/images/search';
+
+  function ladeKatze() {
+    const $button = $('#btn-cat');
+    const $result = $('#cat-result');
+
+    // Während des Ladens: Button sperren und Status anzeigen
+    $button.prop('disabled', true).text('Katze wird gesucht …');
+    $result.removeClass('has-image').text('Lädt …');
+
+    // GET-Request an die API, Antwort ist ein Array mit einem Objekt
+    $.getJSON(CAT_API_URL)
+      .done(function (data) {
+        const katze = data[0];
+
+        // Neues <img> erstellen und den Platzhalter damit ersetzen
+        const $bild = $('<img>', {
+          src: katze.url,
+          alt: 'Zufällige Katze von The Cat API',
+          class: 'cat-img'
+        });
+
+        $result.empty().addClass('has-image').append($bild);
+      })
+      .fail(function () {
+        $result.text('Keine Katze gefunden. Versuch es gleich nochmal.');
+      })
+      .always(function () {
+        $button.prop('disabled', false).text('Neue Katze');
+      });
+  }
+
+  $('#btn-cat').on('click', ladeKatze);
+
   // Anfrage-Button: Formular folgt später
   $('#btn-anfrage').on('click', function () {
     zeigeToast('Danke! Das Formular kommt bald. Die Tür freut sich schon.');
