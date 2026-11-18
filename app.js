@@ -352,6 +352,121 @@ $(function () {
     });
   }
 
+  // =========================================================
+  // e) Kartenausschnitt mit Leaflet und swisstopo-Karte
+  // =========================================================
+  const WOHNUNG_LAT = 47.3770; // die grüne Tür, Zürich Kreis 4 (fiktiv)
+  const WOHNUNG_LON = 8.5280;
+  const SUCH_API_URL = 'https://api3.geo.admin.ch/rest/services/api/SearchServer';
+
+  let karte = null;   // Leaflet-Karte, wird beim ersten Klick erstellt
+  let marker = null;  // Marker für Ortssuche und Ladestationen
+
+  // Eigenes Marker-Icon in der Türfarbe
+  function markerIcon(farbe) {
+    return L.divIcon({
+      className: 'map-pin',
+      html: '<span style="background:' + farbe + '"></span>',
+      iconSize: [22, 22],
+      iconAnchor: [11, 22],
+      popupAnchor: [0, -20]
+    });
+  }
+
+  // Karte einmalig erstellen und auf die Wohnung zentrieren
+  function erstelleKarte() {
+    if (karte) return karte;
+
+    $('#map').removeClass('placeholder-box placeholder-map').addClass('map-live').empty();
+
+    karte = L.map('map').setView([WOHNUNG_LAT, WOHNUNG_LON], 16);
+
+    // Kartenkacheln von swisstopo (geo.admin.ch), frei nutzbar mit Quellenangabe
+    L.tileLayer('https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.pixelkarte-farbe/default/current/3857/{z}/{x}/{y}.jpeg', {
+      maxZoom: 18,
+      attribution: '© <a href="https://www.swisstopo.admin.ch" target="_blank" rel="noopener">swisstopo</a>'
+    }).addTo(karte);
+
+    L.marker([WOHNUNG_LAT, WOHNUNG_LON], { icon: markerIcon('#2f5d46') })
+      .addTo(karte)
+      .bindPopup('<strong>Wohnung 4b</strong><br>Grüne Tür, leicht anheben.')
+      .openPopup();
+
+    return karte;
+  }
+
+  // Karte auf einen Punkt zentrieren und dort einen Marker setzen
+  function zeigeAufKarte(lat, lon, titel, zoom) {
+    erstelleKarte();
+    if (marker) karte.removeLayer(marker);
+
+    marker = L.marker([lat, lon], { icon: markerIcon('#b5542d') })
+      .addTo(karte)
+      .bindPopup($('<div>').text(titel).html()) // Text sicher escapen
+      .openPopup();
+
+    karte.setView([lat, lon], zoom || 15);
+  }
+
+  // Button: Karte zeigen bzw. zurück zur Wohnung
+  $('#btn-map').on('click', function () {
+    erstelleKarte();
+    if (marker) { karte.removeLayer(marker); marker = null; }
+    karte.setView([WOHNUNG_LAT, WOHNUNG_LON], 16);
+    $('#map-info').text('Die grüne Tür liegt genau in der Mitte.');
+    $(this).text('Zurück zur Wohnung');
+  });
+
+  // Für die Schnellen: Ort suchen über die Such-API von geo.admin.ch
+  $('#map-search-form').on('submit', function (event) {
+    event.preventDefault();
+    const $feld = $('#map-search');
+    const suchtext = $feld.val().trim();
+
+    if (suchtext.length < 2) {
+      $feld.addClass('is-invalid');
+      $('#map-info').text('Bitte mindestens 2 Zeichen eingeben.');
+      return;
+    }
+    $feld.removeClass('is-invalid');
+    $('#btn-map-search').prop('disabled', true);
+    $('#map-info').text('Suche „' + suchtext + '“ …');
+
+    $.getJSON(SUCH_API_URL, { searchText: suchtext, type: 'locations', sr: 4326, limit: 1 })
+      .done(function (data) {
+        if (!data.results || data.results.length === 0) {
+          $('#map-info').text('Keinen Ort „' + suchtext + '“ gefunden.');
+          return;
+        }
+        const ort = data.results[0].attrs;
+        // Das Label enthält HTML-Tags wie <b>, die entfernen wir
+        const name = ort.label.replace(/<[^>]*>/g, '');
+        zeigeAufKarte(ort.lat, ort.lon, name, 13);
+        $('#map-info').text('Gefunden: ' + name);
+      })
+      .fail(function () {
+        $('#map-info').text('Suche gerade nicht möglich. Versuch es gleich nochmal.');
+      })
+      .always(function () {
+        $('#btn-map-search').prop('disabled', false);
+      });
+  });
+  $('#map-search').on('input', function () { $(this).removeClass('is-invalid'); });
+
+  // Advanced: Klick auf eine Ladestation zeigt sie auf der Karte
+  $('#charger-result').on('click', 'li[data-lat]', function () {
+    const $eintrag = $(this);
+    const name = $eintrag.find('strong').text();
+
+    zeigeAufKarte(parseFloat($eintrag.data('lat')), parseFloat($eintrag.data('lon')), 'Ladestation: ' + name, 17);
+    $('#map-info').text('Ladestation: ' + name);
+    $('#charger-result li').removeClass('is-active');
+    $eintrag.addClass('is-active');
+
+    // Auf kleinen Bildschirmen zur Karte scrollen
+    document.getElementById('map').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  });
+
   $('#btn-charger').on('click', sucheBeiWinterthur);
   $('#charger-plz-form').on('submit', sucheNachPlz);
   $('#charger-plz').on('input', function () { $(this).removeClass('is-invalid'); });

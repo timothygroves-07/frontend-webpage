@@ -499,6 +499,29 @@ main, nav, footer, .ticker { position: relative; z-index: 1; }
 .charger-addr { color: var(--ink); }
 .charger-meta { color: var(--ink-soft); font-size: .7rem; }
 
+.charger-list li[data-lat] { cursor: pointer; transition: background .15s; }
+.charger-list li[data-lat]:hover,
+.charger-list li.is-active { background: var(--paper); }
+.charger-list li.is-active .charger-head strong { color: var(--rust); }
+
+/* Ergebnis: Karte */
+.map-live {
+  height: 320px;
+  border: 2px solid var(--ink);
+  z-index: 0;
+}
+.map-pin span {
+  display: block;
+  width: 22px;
+  height: 22px;
+  border: 3px solid #fff;
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  box-shadow: 0 2px 6px rgba(0,0,0,.35);
+}
+.leaflet-container { font-family: var(--font-mono); }
+.leaflet-popup-content { font-size: .8rem; }
+
 /* Ergebnis: Wetter */
 .wx-row { gap: .75rem; }
 .wx-label { color: var(--rust); letter-spacing: .05em; }
