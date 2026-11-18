@@ -77,6 +77,52 @@ $(function () {
 
   $('#btn-cat').on('click', ladeKatze);
 
+  // =========================================================
+  // b) Bitcoin-Kurs in USD und CHF (CoinGecko)
+  // =========================================================
+  const BTC_API_URL = 'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd,chf';
+
+  // Zahl schön formatieren, z. B. 64522 -> 64'522.–
+  function formatiereBetrag(betrag) {
+    return new Intl.NumberFormat('de-CH', { maximumFractionDigits: 0 }).format(betrag) + '.–';
+  }
+
+  function ladeBitcoinKurs() {
+    const $button = $('#btn-btc');
+    const $result = $('#btc-result');
+
+    $button.prop('disabled', true).text('Kurs wird geladen …');
+    $result.text('Lädt …');
+
+    // Antwort sieht so aus: { "bitcoin": { "usd": 64522, "chf": 54312 } }
+    $.getJSON(BTC_API_URL)
+      .done(function (data) {
+        const usd = data.bitcoin.usd;
+        const chf = data.bitcoin.chf;
+        const zeit = new Date().toLocaleTimeString('de-CH', { hour: '2-digit', minute: '2-digit' });
+
+        $result.empty().addClass('has-data').append(
+          $('<div>', { class: 'btc-row' }).append(
+            $('<span>', { class: 'btc-label', text: 'USD' }),
+            $('<span>', { class: 'btc-value', text: formatiereBetrag(usd) })
+          ),
+          $('<div>', { class: 'btc-row' }).append(
+            $('<span>', { class: 'btc-label', text: 'CHF' }),
+            $('<span>', { class: 'btc-value', text: formatiereBetrag(chf) })
+          ),
+          $('<div>', { class: 'btc-time', text: 'Stand ' + zeit + ' Uhr' })
+        );
+      })
+      .fail(function () {
+        $result.text('Kurs gerade nicht abrufbar. Vielleicht ist die API müde.');
+      })
+      .always(function () {
+        $button.prop('disabled', false).text('Kurs aktualisieren');
+      });
+  }
+
+  $('#btn-btc').on('click', ladeBitcoinKurs);
+
   // Anfrage-Button: Formular folgt später
   $('#btn-anfrage').on('click', function () {
     zeigeToast('Danke! Das Formular kommt bald. Die Tür freut sich schon.');

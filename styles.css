@@ -438,6 +438,28 @@ main, nav, footer, .ticker { position: relative; z-index: 1; }
   to   { opacity: 1; transform: scale(1); }
 }
 
+/* Ergebnis: Bitcoin-Kurs */
+.placeholder-box.has-data {
+  display: block;
+  place-items: normal;
+  text-align: left;
+  border-style: solid;
+  border-color: var(--ink);
+  background: #fff;
+  color: var(--ink);
+}
+.btc-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: .3rem 0;
+  border-bottom: 1px dotted var(--line);
+  animation: reinpoppen .4s ease-out;
+}
+.btc-label { color: var(--rust); letter-spacing: .1em; }
+.btc-value { font-size: 1.15rem; font-weight: 600; }
+.btc-time { margin-top: .5rem; font-size: .7rem; color: var(--ink-soft); }
+
 .placeholder-box {
   border: 2px dashed var(--line);
   padding: 1rem;
