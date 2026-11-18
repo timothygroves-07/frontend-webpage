@@ -123,6 +123,69 @@ $(function () {
 
   $('#btn-btc').on('click', ladeBitcoinKurs);
 
+  // =========================================================
+  // c) Aktuelles Wetter für Zürich (Open-Meteo)
+  // =========================================================
+  const LAT = 47.3769;   // Zürich
+  const LON = 8.5417;
+  const ORT = 'Zürich, CH';
+
+  // Die Konstanten werden als Parameter an die API-URL angehängt
+  const WETTER_API_URL = 'https://api.open-meteo.com/v1/forecast?' + $.param({
+    latitude: LAT,
+    longitude: LON,
+    daily: 'temperature_2m_max,temperature_2m_min,precipitation_sum',
+    forecast_days: 1,
+    timezone: 'Europe/Zurich'
+  });
+
+  // Kleine Empfehlung fürs Dachfenster, je nach Wetter
+  function dachfensterTipp(tmin, regen) {
+    if (regen >= 1) return 'Dachfenster zu. Herbert mag keinen Regen von oben.';
+    if (tmin < 5) return 'Nur kurz lüften, sonst friert der Plattenspieler.';
+    return 'Dachfenster auf. Vielleicht siehst du heute Nacht den Stern.';
+  }
+
+  function ladeWetter() {
+    const $button = $('#btn-weather');
+    const $result = $('#weather-result');
+
+    $button.prop('disabled', true).text('Wetter wird geladen …');
+    $result.text('Lädt …');
+
+    // Die Werte stecken in Arrays, ein Eintrag pro Tag: data.daily.temperature_2m_max[0]
+    $.getJSON(WETTER_API_URL)
+      .done(function (data) {
+        const tmax = Math.round(data.daily.temperature_2m_max[0]);
+        const tmin = Math.round(data.daily.temperature_2m_min[0]);
+        const regen = data.daily.precipitation_sum[0];
+
+        $result.empty().addClass('has-data').append(
+          $('<div>', { class: 'wx-row' }).append(
+            $('<span>', { class: 'wx-label', text: 'Ort' }),
+            $('<span>', { class: 'wx-value', text: ORT })
+          ),
+          $('<div>', { class: 'wx-row' }).append(
+            $('<span>', { class: 'wx-label', text: 'Heute' }),
+            $('<span>', { class: 'wx-value', text: 'Tmax ' + tmax + '°C · Tmin ' + tmin + '°C' })
+          ),
+          $('<div>', { class: 'wx-row' }).append(
+            $('<span>', { class: 'wx-label', text: 'Niederschlag' }),
+            $('<span>', { class: 'wx-value', text: regen.toFixed(1) + ' mm' })
+          ),
+          $('<div>', { class: 'wx-tipp', text: dachfensterTipp(tmin, regen) })
+        );
+      })
+      .fail(function () {
+        $result.text('Wetter gerade nicht abrufbar. Schau einfach aus dem Dachfenster.');
+      })
+      .always(function () {
+        $button.prop('disabled', false).text('Wetter aktualisieren');
+      });
+  }
+
+  $('#btn-weather').on('click', ladeWetter);
+
   // Anfrage-Button: Formular folgt später
   $('#btn-anfrage').on('click', function () {
     zeigeToast('Danke! Das Formular kommt bald. Die Tür freut sich schon.');

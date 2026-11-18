@@ -448,7 +448,8 @@ main, nav, footer, .ticker { position: relative; z-index: 1; }
   background: #fff;
   color: var(--ink);
 }
-.btc-row {
+.btc-row,
+.wx-row {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
@@ -459,6 +460,18 @@ main, nav, footer, .ticker { position: relative; z-index: 1; }
 .btc-label { color: var(--rust); letter-spacing: .1em; }
 .btc-value { font-size: 1.15rem; font-weight: 600; }
 .btc-time { margin-top: .5rem; font-size: .7rem; color: var(--ink-soft); }
+
+/* Ergebnis: Wetter */
+.wx-row { gap: .75rem; }
+.wx-label { color: var(--rust); letter-spacing: .05em; }
+.wx-value { font-weight: 600; text-align: right; }
+.wx-tipp {
+  margin-top: .6rem;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: .95rem;
+  color: var(--door);
+}
 
 .placeholder-box {
   border: 2px dashed var(--line);
