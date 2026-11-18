@@ -26,6 +26,8 @@ Frontend-Projekt aus Modul 293: eine statische Website zur Vermietung einer Feri
 | c) Wetter Zürich (Tmax, Tmin, Niederschlag) | Open-Meteo |
 | d) 5 nächste Ladestationen ab Winterthur, Suche nach PLZ | BFE / opendata.swiss |
 | e) Karte mit Ortssuche, Klick auf Ladestation zentriert die Karte | geo.admin.ch, Leaflet |
+| Wetterverlauf 5 Tage (Temperatur, Niederschlag) | Open-Meteo, HighCharts |
+| Buchungsformular mit Validierung und Preisberechnung | (Webhook folgt) |
 
 ## Lokal ansehen
 
@@ -37,7 +39,6 @@ Die Seite läuft über GitHub Pages (Branch `main`, Root). Jeder Push auf `main`
 
 ## Noch offen
 
-- Wetter-Chart mit HighCharts
 - Button für die Google-Bildersuche (GET-Übung)
-- Bewerbungsformular mit Anbindung an webhook.site
+- Buchungsformular an webhook.site anbinden (`WEBHOOK_URL` in `app.js`)
 - Validieren (W3C) und Testen (PageSpeed Insights)

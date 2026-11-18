@@ -187,6 +187,80 @@ $(function () {
   $('#btn-weather').on('click', ladeWetter);
 
   // =========================================================
+  // c+) Für die Schnellen: Wetterverlauf 5 Tage mit HighCharts
+  // =========================================================
+  const VERLAUF_API_URL = 'https://api.open-meteo.com/v1/forecast?' + $.param({
+    latitude: LAT,
+    longitude: LON,
+    hourly: 'temperature_2m,precipitation',
+    forecast_days: 5,
+    // ICON-CH1 rechnet nur rund 33 Stunden voraus, ICON-CH2 deckt alle 5 Tage ab
+    models: 'meteoswiss_icon_ch2',
+    timezone: 'Europe/Zurich'
+  });
+
+  // Deutsche Wochentage und Monate für die Achsenbeschriftung
+  Highcharts.setOptions({
+    lang: {
+      weekdays: ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'],
+      shortWeekdays: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
+      months: ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'],
+      decimalPoint: '.',
+      thousandsSep: "'"
+    }
+  });
+
+  function ladeWetterVerlauf() {
+    const $button = $('#btn-weather-chart');
+    const $chart = $('#weather-chart');
+
+    $button.prop('disabled', true).text('Verlauf wird geladen …');
+
+    $.getJSON(VERLAUF_API_URL)
+      .done(function (data) {
+        // Zeiten ("2026-11-18T13:00") in Millisekunden umwandeln und mit den Werten paaren.
+        // Die Zeiten sind schon Schweizer Ortszeit, darum als UTC behandeln (sonst verschiebt sich alles).
+        const zeiten = data.hourly.time.map(function (t) { return Date.parse(t + ':00Z'); });
+        const temperatur = zeiten.map(function (z, i) { return [z, data.hourly.temperature_2m[i]]; });
+        const regen = zeiten.map(function (z, i) { return [z, data.hourly.precipitation[i]]; });
+
+        $chart.removeClass('placeholder-box placeholder-chart').addClass('chart-live').empty();
+
+        Highcharts.chart('weather-chart', {
+          chart: { backgroundColor: 'transparent', style: { fontFamily: 'JetBrains Mono, monospace' } },
+          title: { text: null },
+          credits: { enabled: false },
+          time: { useUTC: true },
+          xAxis: {
+            type: 'datetime',
+            tickInterval: 24 * 3600 * 1000,
+            labels: { format: '{value:%a %e.}' },
+            gridLineWidth: 1,
+            gridLineColor: '#e6dccb'
+          },
+          yAxis: [
+            { title: { text: 'Temperatur °C' }, labels: { format: '{value}°' } },
+            { title: { text: 'Niederschlag mm' }, opposite: true, min: 0, labels: { format: '{value}' } }
+          ],
+          tooltip: { shared: true, xDateFormat: '%A, %e. %B, %H:%M Uhr' },
+          legend: { itemStyle: { fontWeight: 'normal' } },
+          series: [
+            { name: 'Niederschlag', type: 'column', yAxis: 1, data: regen, color: '#7fa7c9', tooltip: { valueSuffix: ' mm' }, pointPadding: 0, groupPadding: 0 },
+            { name: 'Temperatur', type: 'spline', data: temperatur, color: '#b5542d', lineWidth: 2, marker: { enabled: false }, tooltip: { valueSuffix: ' °C' } }
+          ]
+        });
+      })
+      .fail(function () {
+        $chart.text('Prognose gerade nicht abrufbar.');
+      })
+      .always(function () {
+        $button.prop('disabled', false).text('Verlauf aktualisieren');
+      });
+  }
+
+  $('#btn-weather-chart').on('click', ladeWetterVerlauf);
+
+  // =========================================================
   // d) Die 5 nächstgelegenen Ladestationen (opendata.swiss / BFE)
   // =========================================================
   const LADE_API_URL = 'https://data.geo.admin.ch/ch.bfe.ladestellen-elektromobilitaet/data/ch.bfe.ladestellen-elektromobilitaet.json';
@@ -471,8 +545,119 @@ $(function () {
   $('#charger-plz-form').on('submit', sucheNachPlz);
   $('#charger-plz').on('input', function () { $(this).removeClass('is-invalid'); });
 
-  // Anfrage-Button: Formular folgt später
-  $('#btn-anfrage').on('click', function () {
-    zeigeToast('Danke! Das Formular kommt bald. Die Tür freut sich schon.');
+  // =========================================================
+  // Buchungsformular
+  // =========================================================
+  const PREIS_NACHT = 118;
+  const REINIGUNG = 40;
+  const MIN_NAECHTE = 2;
+  // Hier kommt später die URL von webhook.site rein. Leer = nur lokal anzeigen.
+  const WEBHOOK_URL = '';
+
+  const $form = $('#anfrage');
+  const $anreise = $('#anreise');
+  const $abreise = $('#abreise');
+
+  // Datum als "YYYY-MM-DD" (Format von <input type="date">)
+  function isoDatum(datum) {
+    return datum.toISOString().slice(0, 10);
+  }
+  function plusTage(iso, tage) {
+    const d = new Date(iso + 'T00:00:00Z');
+    d.setUTCDate(d.getUTCDate() + tage);
+    return isoDatum(d);
+  }
+  function naechteZwischen(von, bis) {
+    if (!von || !bis) return 0;
+    return Math.round((Date.parse(bis) - Date.parse(von)) / 86400000);
+  }
+  function chf(betrag) {
+    return 'CHF ' + new Intl.NumberFormat('de-CH').format(betrag) + '.–';
+  }
+
+  // Frühestes Anreisedatum ist heute, Abreise mindestens 2 Nächte später
+  const heute = isoDatum(new Date());
+  $anreise.attr('min', heute);
+  $abreise.attr('min', plusTage(heute, MIN_NAECHTE));
+
+  // Zusammenfassung und Datumsprüfung bei jeder Änderung aktualisieren
+  function aktualisiereBuchung() {
+    const von = $anreise.val();
+    const bis = $abreise.val();
+    if (von) $abreise.attr('min', plusTage(von, MIN_NAECHTE));
+
+    const naechte = naechteZwischen(von, bis);
+
+    // Eigene Regel: mindestens 2 Nächte. setCustomValidity macht das Feld ungültig.
+    if (von && bis && naechte < MIN_NAECHTE) {
+      $abreise[0].setCustomValidity('mindestens 2 Nächte');
+    } else {
+      $abreise[0].setCustomValidity('');
+    }
+
+    if (naechte >= MIN_NAECHTE) {
+      $('#sum-naechte').text(naechte);
+      $('#sum-miete').text(chf(naechte * PREIS_NACHT));
+      $('#sum-total').text(chf(naechte * PREIS_NACHT + REINIGUNG));
+      $('#sum-bonus')
+        .toggleClass('is-earned', naechte >= 7)
+        .text(naechte >= 7 ? 'Bonus: Du darfst dir eine Platte aussuchen.' : 'Noch ' + (7 - naechte) + ' Nächte bis zur Gratis-Platte.');
+    } else {
+      $('#sum-naechte, #sum-miete, #sum-total').text('–');
+      $('#sum-bonus').removeClass('is-earned').text('Ab 7 Nächten: eine Platte geschenkt.');
+    }
+  }
+  $anreise.add($abreise).on('change input', aktualisiereBuchung);
+
+  // Zeichen zählen im Nachrichtenfeld
+  $('#nachricht').on('input', function () {
+    $('#nachricht-zaehler').text($(this).val().length);
+  });
+
+  // Absenden: erst prüfen (Bootstrap-Validierung), dann senden oder anzeigen
+  $form.on('submit', function (event) {
+    event.preventDefault();
+    aktualisiereBuchung();
+
+    if (!this.checkValidity()) {
+      $form.addClass('was-validated');
+      // Zum ersten Fehler springen
+      const $erster = $form.find('input:invalid, select:invalid, textarea:invalid').first();
+      $erster.trigger('focus');
+      zeigeToast('Fast. Ein paar Felder brauchen noch Liebe.');
+      return;
+    }
+
+    // Formulardaten als Objekt sammeln
+    const daten = {};
+    $.each($form.serializeArray(), function (_, feld) { daten[feld.name] = feld.value.trim(); });
+    daten.naechte = naechteZwischen(daten.anreise, daten.abreise);
+    daten.total_chf = daten.naechte * PREIS_NACHT + REINIGUNG;
+
+    const $button = $('#btn-senden').prop('disabled', true);
+
+    function fertig() {
+      zeigeToast('Danke, ' + daten.vorname + '! Wir melden uns per ' + daten.kontaktart + '.');
+      $form[0].reset();
+      $form.removeClass('was-validated');
+      $('#nachricht-zaehler').text(0);
+      aktualisiereBuchung();
+      $button.prop('disabled', false);
+    }
+
+    if (!WEBHOOK_URL) {
+      // Noch kein Backend: Daten nur in der Konsole zeigen
+      console.log('Buchungsanfrage (noch nicht gesendet):', daten);
+      fertig();
+      return;
+    }
+
+    // POST an den Webhook (Aufgabe "Formular an Backend anbinden")
+    $.post(WEBHOOK_URL, daten)
+      .done(fertig)
+      .fail(function () {
+        zeigeToast('Senden hat nicht geklappt. Versuch es gleich nochmal.');
+        $button.prop('disabled', false);
+      });
   });
 });

@@ -504,6 +504,15 @@ main, nav, footer, .ticker { position: relative; z-index: 1; }
 .charger-list li.is-active { background: var(--paper); }
 .charger-list li.is-active .charger-head strong { color: var(--rust); }
 
+/* Ergebnis: Wetter-Chart */
+.placeholder-chart { min-height: 300px; }
+.chart-live {
+  height: 320px;
+  background: #fff;
+  border: 2px solid var(--ink);
+  padding: .5rem;
+}
+
 /* Ergebnis: Karte */
 .map-live {
   height: 320px;
@@ -604,6 +613,100 @@ main, nav, footer, .ticker { position: relative; z-index: 1; }
   .ticket { grid-template-columns: 2fr 1fr; }
   .ticket-stub { border-top: 0; border-left: 2px dashed var(--ink); }
 }
+
+/* ---------- Buchungsformular ---------- */
+.booking-group {
+  border-top: 2px solid var(--ink);
+  padding-top: 1rem;
+  margin-bottom: 2.5rem;
+}
+.booking-group legend {
+  font-family: var(--font-mono);
+  font-size: .8rem;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  color: var(--rust);
+  margin-bottom: 1rem;
+}
+.booking .form-label {
+  font-family: var(--font-mono);
+  font-size: .8rem;
+  color: var(--ink-soft);
+  margin-bottom: .3rem;
+}
+.booking .optional { color: var(--line); }
+.form-control-booking {
+  border-radius: 0;
+  border: 0;
+  border-bottom: 2px solid var(--ink);
+  background-color: transparent;
+  font-family: var(--font-serif);
+  font-size: 1.1rem;
+  padding: .45rem .1rem;
+  transition: border-color .2s, background-color .2s;
+}
+.form-control-booking:hover { background-color: rgba(255,255,255,.5); }
+.form-control-booking:focus {
+  background-color: #fff;
+  border-bottom-color: var(--door);
+  box-shadow: 0 3px 0 0 var(--door);
+}
+textarea.form-control-booking { border: 2px solid var(--ink); padding: .6rem; }
+.booking .form-text { font-family: var(--font-mono); font-size: .7rem; color: var(--ink-soft); }
+
+/* Ungültige Felder (Bootstrap setzt .was-validated nach dem ersten Absenden) */
+.was-validated .form-control-booking:invalid,
+.was-validated .form-select.form-control-booking:invalid {
+  border-color: var(--rust);
+  background-color: rgba(181, 84, 45, .06);
+  animation: wackeln .3s;
+}
+.was-validated .form-control-booking:valid { border-color: var(--door); }
+.booking .invalid-feedback { font-family: var(--font-mono); font-size: .72rem; color: var(--rust); }
+@keyframes wackeln {
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+}
+
+/* Auswahl-Kacheln für die Kontaktart */
+.choice-row { display: flex; flex-wrap: wrap; gap: .5rem; }
+.btn-choice {
+  border: 2px solid var(--ink);
+  border-radius: 0;
+  font-family: var(--font-mono);
+  font-size: .85rem;
+  padding: .4rem .9rem;
+  color: var(--ink);
+  background: transparent;
+}
+.btn-choice:hover { background: #fff; color: var(--ink); border-color: var(--ink); }
+.btn-check:checked + .btn-choice {
+  background: var(--door);
+  border-color: var(--door);
+  color: var(--paper);
+}
+.btn-check:focus-visible + .btn-choice { box-shadow: 0 0 0 3px rgba(47, 93, 70, .3); }
+
+.booking .form-check-input { border-radius: 0; border: 2px solid var(--ink); }
+.booking .form-check-input:checked { background-color: var(--door); border-color: var(--door); }
+.booking a { color: var(--door); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+.booking a:hover { color: var(--rust); }
+
+/* Zusammenfassung rechts */
+.booking-summary {
+  position: sticky;
+  top: 5rem;
+  background: #fff;
+  border: 2px solid var(--ink);
+  box-shadow: 8px 8px 0 var(--door);
+  padding: 1.5rem;
+}
+.summary-list { list-style: none; padding: 0; margin: 0 0 1rem; font-family: var(--font-mono); font-size: .85rem; }
+.summary-list li { display: flex; justify-content: space-between; padding: .4rem 0; border-bottom: 1px dotted var(--line); }
+.summary-total { font-weight: 600; font-size: 1rem; border-bottom: 0 !important; }
+.summary-bonus { font-style: italic; color: var(--ink-soft); font-size: .9rem; }
+.summary-bonus.is-earned { color: var(--door); font-weight: 600; }
+.summary-note { font-family: var(--font-mono); font-size: .7rem; color: var(--ink-soft); margin: .75rem 0 0; }
 
 /* ---------- Footer & Toast ---------- */
 .footer {

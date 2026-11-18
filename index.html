@@ -13,6 +13,8 @@
 
   <!-- Bootstrap 5.3 CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <!-- Leaflet 1.9.4 CSS (Karten) -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
         integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
@@ -228,6 +230,17 @@
           </div>
         </div>
 
+        <!-- c+) Wetterverlauf 5 Tage (HighCharts) -->
+        <div class="col-12">
+          <div class="card-niche feature">
+            <span class="badge-live">live</span>
+            <h3>Dachfenster-Prognose · 5 Tage</h3>
+            <p>Temperatur und Niederschlag für Zürich, Stunde für Stunde. Modell der MeteoSchweiz, Planung der Gertrud-Besuche nicht inbegriffen.</p>
+            <div id="weather-chart" class="placeholder-box placeholder-chart" aria-live="polite">Hier erscheint der Wetterverlauf</div>
+            <button id="btn-weather-chart" class="btn btn-outline-niche mt-3" type="button">Verlauf laden</button>
+          </div>
+        </div>
+
         <!-- d) Ladestationen -->
         <div class="col-md-6 col-xl-6">
           <div class="card-niche feature h-100">
@@ -304,10 +317,126 @@
         </div>
         <div class="ticket-stub">
           <p class="stub-label">Anfrage</p>
-          <p class="stub-text">Das Formular kommt bald. Bis dahin freut sich die Tür auf dich.</p>
-          <button id="btn-anfrage" class="btn btn-niche w-100" type="button">Anfrage senden</button>
+          <p class="stub-text">Daten wählen, kurz vorstellen, fertig. Die Tür freut sich auf dich.</p>
+          <a href="#anfrage" class="btn btn-niche w-100">Zum Formular</a>
         </div>
       </div>
+
+      <!-- Buchungsformular -->
+      <form id="anfrage" class="booking mt-5" novalidate>
+        <div class="row g-5">
+          <div class="col-lg-8">
+
+            <fieldset class="booking-group">
+              <legend>01 · Wann kommst du?</legend>
+              <div class="row g-3">
+                <div class="col-sm-6">
+                  <label for="anreise" class="form-label">Anreise</label>
+                  <input id="anreise" name="anreise" type="date" class="form-control form-control-booking" required>
+                  <div class="invalid-feedback">Bitte ein Anreisedatum ab heute wählen.</div>
+                </div>
+                <div class="col-sm-6">
+                  <label for="abreise" class="form-label">Abreise</label>
+                  <input id="abreise" name="abreise" type="date" class="form-control form-control-booking" required>
+                  <div class="invalid-feedback" id="abreise-feedback">Bitte mindestens 2 Nächte nach der Anreise.</div>
+                </div>
+                <div class="col-sm-6">
+                  <label for="gaeste" class="form-label">Gäste</label>
+                  <select id="gaeste" name="gaeste" class="form-select form-control-booking" required>
+                    <option value="1">1 Person</option>
+                    <option value="2" selected>2 Personen</option>
+                  </select>
+                  <div class="form-text">Mehr passen nicht unter die Dachschräge.</div>
+                </div>
+                <div class="col-sm-6">
+                  <label for="anlass" class="form-label">Anlass <span class="optional">(optional)</span></label>
+                  <select id="anlass" name="anlass" class="form-select form-control-booking">
+                    <option value="">Bitte wählen</option>
+                    <option>Städtetrip</option>
+                    <option>Platten hören und nichts tun</option>
+                    <option>Gertrud kennenlernen</option>
+                    <option>Geschäftlich (wir verraten nichts)</option>
+                    <option>Etwas anderes</option>
+                  </select>
+                </div>
+              </div>
+            </fieldset>
+
+            <fieldset class="booking-group">
+              <legend>02 · Wer bist du?</legend>
+              <div class="row g-3">
+                <div class="col-sm-6">
+                  <label for="vorname" class="form-label">Vorname</label>
+                  <input id="vorname" name="vorname" type="text" class="form-control form-control-booking" autocomplete="given-name" minlength="2" maxlength="50" required>
+                  <div class="invalid-feedback">Bitte deinen Vornamen angeben.</div>
+                </div>
+                <div class="col-sm-6">
+                  <label for="nachname" class="form-label">Nachname</label>
+                  <input id="nachname" name="nachname" type="text" class="form-control form-control-booking" autocomplete="family-name" minlength="2" maxlength="50" required>
+                  <div class="invalid-feedback">Bitte deinen Nachnamen angeben.</div>
+                </div>
+                <div class="col-sm-7">
+                  <label for="email" class="form-label">E-Mail</label>
+                  <input id="email" name="email" type="email" class="form-control form-control-booking" autocomplete="email" placeholder="name@beispiel.ch" maxlength="100" required>
+                  <div class="invalid-feedback">Bitte eine gültige E-Mail-Adresse.</div>
+                </div>
+                <div class="col-sm-5">
+                  <label for="handy" class="form-label">Handy</label>
+                  <input id="handy" name="handy" type="tel" class="form-control form-control-booking" autocomplete="tel" placeholder="079 123 45 67" pattern="^(\+41|0041|0)\s?7[5-9](\s?\d){7}$" required>
+                  <div class="invalid-feedback">Bitte eine Schweizer Handynummer, z. B. 079 123 45 67.</div>
+                </div>
+                <div class="col-12">
+                  <span class="form-label d-block">Wie sollen wir uns melden?</span>
+                  <div class="choice-row">
+                    <input class="btn-check" type="radio" name="kontaktart" id="kontakt-mail" value="E-Mail" checked>
+                    <label class="btn btn-choice" for="kontakt-mail"><i class="bi bi-envelope" aria-hidden="true"></i> E-Mail</label>
+                    <input class="btn-check" type="radio" name="kontaktart" id="kontakt-sms" value="SMS">
+                    <label class="btn btn-choice" for="kontakt-sms"><i class="bi bi-chat-dots" aria-hidden="true"></i> SMS</label>
+                    <input class="btn-check" type="radio" name="kontaktart" id="kontakt-anruf" value="Anruf">
+                    <label class="btn btn-choice" for="kontakt-anruf"><i class="bi bi-telephone" aria-hidden="true"></i> Anruf</label>
+                  </div>
+                </div>
+              </div>
+            </fieldset>
+
+            <fieldset class="booking-group">
+              <legend>03 · Noch etwas?</legend>
+              <label for="nachricht" class="form-label">Nachricht <span class="optional">(optional)</span></label>
+              <textarea id="nachricht" name="nachricht" class="form-control form-control-booking" rows="4" maxlength="500" placeholder="Lieblingsplatte, Ankunftszeit, Fragen zu Herbert …"></textarea>
+              <div class="form-text text-end"><span id="nachricht-zaehler">0</span> / 500</div>
+
+              <div class="form-check mt-3">
+                <input id="regeln-ok" name="hausregeln" class="form-check-input" type="checkbox" value="ja" required>
+                <label for="regeln-ok" class="form-check-label">Ich habe die <a href="#regeln">Hausregeln</a> gelesen und hebe die Tür beim Schliessen an.</label>
+                <div class="invalid-feedback">Ohne Hausregeln keine Tür.</div>
+              </div>
+              <div class="form-check mt-2">
+                <input id="datenschutz-ok" name="datenschutz" class="form-check-input" type="checkbox" value="ja" required>
+                <label for="datenschutz-ok" class="form-check-label">Ich akzeptiere die <a href="https://www.edoeb.admin.ch/de/datenschutz" target="_blank" rel="noopener">Datenschutzbestimmungen <i class="bi bi-box-arrow-up-right" aria-hidden="true"></i></a>.</label>
+                <div class="invalid-feedback">Bitte bestätigen.</div>
+              </div>
+            </fieldset>
+          </div>
+
+          <!-- Zusammenfassung, wird live berechnet -->
+          <div class="col-lg-4">
+            <aside class="booking-summary">
+              <p class="stub-label">Dein Aufenthalt</p>
+              <ul class="summary-list">
+                <li><span>Nächte</span><span id="sum-naechte">–</span></li>
+                <li><span>CHF 118.– × Nächte</span><span id="sum-miete">–</span></li>
+                <li><span>Endreinigung</span><span>CHF 40.–</span></li>
+                <li class="summary-total"><span>Total</span><span id="sum-total">–</span></li>
+              </ul>
+              <p id="sum-bonus" class="summary-bonus">Ab 7 Nächten: eine Platte geschenkt.</p>
+              <button id="btn-senden" class="btn btn-niche w-100 btn-lg" type="submit">
+                <i class="bi bi-envelope-paper-heart" aria-hidden="true"></i> Anfrage senden
+              </button>
+              <p class="summary-note">Unverbindlich. Wir melden uns innert 24 Stunden.</p>
+            </aside>
+          </div>
+        </div>
+      </form>
     </section>
 
   </main>
@@ -353,6 +482,8 @@
   <!-- Leaflet 1.9.4 JS (Karten) -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
           integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <!-- HighCharts 11 (Diagramme) -->
+  <script src="https://cdn.jsdelivr.net/npm/highcharts@11.4.8/highcharts.js"></script>
   <!-- Eigenes Script -->
   <script src="app.js"></script>
 </body>
