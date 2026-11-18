@@ -228,15 +228,21 @@
         <!-- d) Ladestationen -->
         <div class="col-md-6 col-xl-6">
           <div class="card-niche feature h-100">
-            <span class="badge-soon">bald</span>
+            <span class="badge-live">live</span>
             <h3>Strom für dein Auto</h3>
             <p>Die fünf nächsten Ladestationen. Für den Fall, dass du nicht mit dem Velo kommst (verständlich, 84 Stufen).</p>
-            <ol id="charger-result" class="placeholder-box placeholder-list">
+            <form id="charger-plz-form" class="d-flex gap-2 mb-3" novalidate>
+              <label for="charger-plz" class="visually-hidden">Postleitzahl</label>
+              <input id="charger-plz" class="form-control form-control-niche" type="text" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" placeholder="PLZ, z. B. 8400">
+              <button id="btn-charger-plz" class="btn btn-outline-niche text-nowrap" type="submit">Nach PLZ</button>
+            </form>
+            <p id="charger-info" class="charger-info mb-2">Standard: rund um Winterthur</p>
+            <ol id="charger-result" class="placeholder-box placeholder-list" aria-live="polite">
               <li>Ladestation ...</li>
               <li>Ladestation ...</li>
               <li>Ladestation ...</li>
             </ol>
-            <button id="btn-charger" class="btn btn-outline-niche mt-3" type="button" disabled>Ladestationen suchen</button>
+            <button id="btn-charger" class="btn btn-outline-niche mt-3" type="button">Winterthur suchen</button>
           </div>
         </div>
 

@@ -461,6 +461,44 @@ main, nav, footer, .ticker { position: relative; z-index: 1; }
 .btc-value { font-size: 1.15rem; font-weight: 600; }
 .btc-time { margin-top: .5rem; font-size: .7rem; color: var(--ink-soft); }
 
+/* Ergebnis: Ladestationen */
+.form-control-niche {
+  border-radius: 0;
+  border-color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: .85rem;
+  max-width: 180px;
+}
+.form-control-niche:focus {
+  border-color: var(--door);
+  box-shadow: 0 0 0 3px rgba(47, 93, 70, .2);
+}
+.charger-info {
+  font-family: var(--font-mono);
+  font-size: .75rem;
+  color: var(--ink-soft) !important;
+}
+.placeholder-box.charger-list {
+  padding: .5rem 1rem .5rem 2.25rem;
+  font-size: .8rem;
+}
+.charger-list li {
+  padding: .5rem 0;
+  border-bottom: 1px dotted var(--line);
+  animation: reinpoppen .4s ease-out;
+}
+.charger-list li:last-child { border-bottom: 0; }
+.charger-head {
+  display: flex;
+  justify-content: space-between;
+  gap: .75rem;
+  font-family: var(--font-serif);
+  font-size: .95rem;
+}
+.charger-km { font-family: var(--font-mono); color: var(--rust); white-space: nowrap; }
+.charger-addr { color: var(--ink); }
+.charger-meta { color: var(--ink-soft); font-size: .7rem; }
+
 /* Ergebnis: Wetter */
 .wx-row { gap: .75rem; }
 .wx-label { color: var(--rust); letter-spacing: .05em; }

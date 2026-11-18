@@ -186,6 +186,176 @@ $(function () {
 
   $('#btn-weather').on('click', ladeWetter);
 
+  // =========================================================
+  // d) Die 5 nächstgelegenen Ladestationen (opendata.swiss / BFE)
+  // =========================================================
+  const LADE_API_URL = 'https://data.geo.admin.ch/ch.bfe.ladestellen-elektromobilitaet/data/ch.bfe.ladestellen-elektromobilitaet.json';
+  const WINT_LAT = 47.4988; // Winterthur (hardcoded)
+  const WINT_LON = 8.7237;
+  const ANZAHL = 5;
+
+  // Die Datei ist gross (rund 18'000 Ladepunkte). Wir laden sie nur einmal
+  // und merken uns die aufbereitete Liste für alle weiteren Klicks.
+  let ladestationen = null;
+
+  // Abstand zwischen zwei Koordinaten in km (Haversine-Formel)
+  function distanzKm(lat1, lon1, lat2, lon2) {
+    const R = 6371; // Erdradius in km
+    const rad = Math.PI / 180;
+    const dLat = (lat2 - lat1) * rad;
+    const dLon = (lon2 - lon1) * rad;
+    const a = Math.sin(dLat / 2) ** 2 +
+              Math.cos(lat1 * rad) * Math.cos(lat2 * rad) * Math.sin(dLon / 2) ** 2;
+    return 2 * R * Math.asin(Math.sqrt(a));
+  }
+
+  // Rohdaten in eine einfache Liste umwandeln: ein Eintrag pro Standort
+  function bereiteStationenAuf(data) {
+    const standorte = {};
+
+    // Aufbau: data.EVSEData = [ Betreiber, ... ], jeder Betreiber hat EVSEDataRecord = [ Ladepunkt, ... ]
+    $.each(data.EVSEData, function (_, betreiber) {
+      $.each(betreiber.EVSEDataRecord, function (_, punkt) {
+        // Koordinaten stehen als Text "47.43958 9.006634" drin
+        const teile = (punkt.GeoCoordinates && punkt.GeoCoordinates.Google || '').split(' ');
+        const lat = parseFloat(teile[0]);
+        const lon = parseFloat(teile[1]);
+        if (isNaN(lat) || isNaN(lon)) return; // Eintrag ohne Koordinaten überspringen
+
+        // Mehrere Ladepunkte am gleichen Ort zusammenfassen
+        const schluessel = lat.toFixed(5) + ',' + lon.toFixed(5);
+        const leistung = Math.max(0, ...(punkt.ChargingFacilities || []).map(function (f) { return f.power || 0; }));
+
+        if (standorte[schluessel]) {
+          standorte[schluessel].anzahl += 1;
+          standorte[schluessel].leistung = Math.max(standorte[schluessel].leistung, leistung);
+          return;
+        }
+
+        // Achtung, die Daten sind nicht einheitlich: meistens eine Liste,
+        // manchmal ein einzelnes Objekt, manchmal null
+        const namen = $.isArray(punkt.ChargingStationNames)
+          ? punkt.ChargingStationNames
+          : (punkt.ChargingStationNames ? [punkt.ChargingStationNames] : []);
+        const nameDe = namen.find(function (n) { return n.lang === 'de'; }) || namen[0];
+        const adr = punkt.Address || {};
+
+        standorte[schluessel] = {
+          name: nameDe ? nameDe.value : 'Ladestation',
+          strasse: [adr.Street, adr.HouseNum].filter(Boolean).join(' '),
+          plz: adr.PostalCode || '',
+          ort: adr.City || '',
+          betreiber: betreiber.OperatorName,
+          lat: lat,
+          lon: lon,
+          leistung: leistung,
+          anzahl: 1
+        };
+      });
+    });
+
+    return Object.values(standorte);
+  }
+
+  // Liste rendern. Jeder Eintrag merkt sich seine Koordinaten (für die Karte später).
+  function zeigeStationen(stationen, mitDistanz) {
+    const $liste = $('#charger-result').empty().addClass('has-data charger-list');
+
+    $.each(stationen, function (_, s) {
+      const details = [s.strasse, (s.plz + ' ' + s.ort).trim()].filter(Boolean).join(', ');
+      const meta = [
+        s.leistung ? s.leistung + ' kW' : null,
+        s.anzahl > 1 ? s.anzahl + ' Ladepunkte' : '1 Ladepunkt',
+        s.betreiber
+      ].filter(Boolean).join(' · ');
+
+      $('<li>', { 'data-lat': s.lat, 'data-lon': s.lon }).append(
+        $('<div>', { class: 'charger-head' }).append(
+          $('<strong>', { text: s.name }),
+          mitDistanz ? $('<span>', { class: 'charger-km', text: s.distanz.toFixed(1) + ' km' }) : null
+        ),
+        $('<div>', { class: 'charger-addr', text: details }),
+        $('<div>', { class: 'charger-meta', text: meta })
+      ).appendTo($liste);
+    });
+  }
+
+  // Daten holen (oder aus dem Speicher nehmen) und dann "weiter" ausführen
+  function mitStationen(weiter) {
+    if (ladestationen) {
+      weiter();
+      return;
+    }
+    $('#charger-result').removeClass('has-data charger-list').html('<li>Lade Daten vom Bund … (ca. 1 MB)</li>');
+
+    $.getJSON(LADE_API_URL)
+      .done(function (data) {
+        ladestationen = bereiteStationenAuf(data);
+        weiter();
+      })
+      .fail(function () {
+        $('#charger-result').removeClass('has-data charger-list').html('<li>Daten gerade nicht abrufbar. Versuch es gleich nochmal.</li>');
+      })
+      .always(function () {
+        $('#btn-charger').prop('disabled', false).text('Winterthur suchen');
+        $('#btn-charger-plz').prop('disabled', false);
+      });
+  }
+
+  // Standard: die 5 nächsten Stationen zu Winterthur
+  function sucheBeiWinterthur() {
+    $('#btn-charger').prop('disabled', true).text('Suche läuft …');
+
+    mitStationen(function () {
+      const naechste = ladestationen
+        .map(function (s) { return $.extend({}, s, { distanz: distanzKm(WINT_LAT, WINT_LON, s.lat, s.lon) }); })
+        .sort(function (a, b) { return a.distanz - b.distanz; })
+        .slice(0, ANZAHL);
+
+      $('#charger-info').text('Die ' + ANZAHL + ' nächsten Stationen ab Winterthur Zentrum');
+      zeigeStationen(naechste, true);
+      $('#btn-charger').prop('disabled', false).text('Winterthur suchen');
+    });
+  }
+
+  // Für die Schnellen: Suche nach PLZ, Resultate am gleichen Ort im DOM
+  function sucheNachPlz(event) {
+    event.preventDefault();
+    const $feld = $('#charger-plz');
+    const plz = $feld.val().trim();
+
+    // Never trust user input: nur genau 4 Ziffern zulassen
+    if (!/^[0-9]{4}$/.test(plz)) {
+      $feld.addClass('is-invalid');
+      $('#charger-info').text('Bitte eine Schweizer PLZ mit 4 Ziffern eingeben.');
+      return;
+    }
+    $feld.removeClass('is-invalid');
+    $('#btn-charger-plz').prop('disabled', true);
+
+    mitStationen(function () {
+      const treffer = ladestationen.filter(function (s) { return s.plz === plz; });
+
+      if (treffer.length === 0) {
+        $('#charger-info').text('Keine Ladestation mit PLZ ' + plz + ' gefunden.');
+        $('#charger-result').removeClass('has-data charger-list').html('<li>Hier lädt wohl jeder zu Hause.</li>');
+      } else {
+        // Stärkste Stationen zuerst
+        const beste = treffer.sort(function (a, b) { return b.leistung - a.leistung; }).slice(0, ANZAHL);
+        const info = treffer.length === 1
+          ? '1 Standort mit PLZ ' + plz + ':'
+          : treffer.length + ' Standorte mit PLZ ' + plz + ', die ' + beste.length + ' stärksten:';
+        $('#charger-info').text(info);
+        zeigeStationen(beste, false);
+      }
+      $('#btn-charger-plz').prop('disabled', false);
+    });
+  }
+
+  $('#btn-charger').on('click', sucheBeiWinterthur);
+  $('#charger-plz-form').on('submit', sucheNachPlz);
+  $('#charger-plz').on('input', function () { $(this).removeClass('is-invalid'); });
+
   // Anfrage-Button: Formular folgt später
   $('#btn-anfrage').on('click', function () {
     zeigeToast('Danke! Das Formular kommt bald. Die Tür freut sich schon.');
