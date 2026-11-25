@@ -27,7 +27,9 @@ Frontend-Projekt aus Modul 293: eine statische Website zur Vermietung einer Feri
 | d) 5 nächste Ladestationen ab Winterthur, Suche nach PLZ | BFE / opendata.swiss |
 | e) Karte mit Ortssuche, Klick auf Ladestation zentriert die Karte | geo.admin.ch, Leaflet |
 | Wetterverlauf 5 Tage (Temperatur, Niederschlag) | Open-Meteo, HighCharts |
-| Buchungsformular mit Validierung und Preisberechnung | (Webhook folgt) |
+| Buchungsformular mit Validierung und Preisberechnung, POST an Webhook | webhook.site |
+
+> Achtung: Die Webhook-URL steht öffentlich im Code. Wer sie kennt, kann die eingegangenen Anfragen auf webhook.site ansehen. Darum nur Testdaten eingeben. Free-URLs laufen nach 7 Tagen ab.
 
 ## Lokal ansehen
 
@@ -40,5 +42,4 @@ Die Seite läuft über GitHub Pages (Branch `main`, Root). Jeder Push auf `main`
 ## Noch offen
 
 - Button für die Google-Bildersuche (GET-Übung)
-- Buchungsformular an webhook.site anbinden (`WEBHOOK_URL` in `app.js`)
 - Validieren (W3C) und Testen (PageSpeed Insights)

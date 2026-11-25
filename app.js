@@ -551,8 +551,10 @@ $(function () {
   const PREIS_NACHT = 118;
   const REINIGUNG = 40;
   const MIN_NAECHTE = 2;
-  // Hier kommt später die URL von webhook.site rein. Leer = nur lokal anzeigen.
-  const WEBHOOK_URL = '';
+  // Endpoint von webhook.site: nimmt die Anfragen entgegen, ansehen unter
+  // https://webhook.site/#!/view/1ccb6196-80fd-4fcd-a8b6-7711bb7755d7
+  // Leer lassen = nichts senden, Daten nur in der Konsole zeigen.
+  const WEBHOOK_URL = 'https://webhook.site/1ccb6196-80fd-4fcd-a8b6-7711bb7755d7';
 
   const $form = $('#anfrage');
   const $anreise = $('#anreise');
