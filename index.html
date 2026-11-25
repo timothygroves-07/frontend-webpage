@@ -3,13 +3,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Wohnung 4b · Ferienwohnung mit grüner Tür</title>
-  <meta name="description" content="Ferienwohnung im 4. Stock, ohne Lift, mit Plattenspieler, Dachfenster und einer Nachbarskatze namens Gertrud.">
+  <title>Villa Calce · Val d'Orcia, Toscana</title>
+  <meta name="description" content="Villa Calce: ein Haus aus Kalk, Stein und Licht im Val d'Orcia. 6 Suiten, 18 m Pool, 3 Hektaren Oliven. Zu vermieten.">
 
-  <!-- Schriften -->
+  <!-- Schriften: Syne (Titel), Inter Tight (Text), JetBrains Mono (Labels) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,700;1,9..144,400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;700;800&family=Inter+Tight:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
   <!-- Bootstrap 5.3 CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -23,480 +23,427 @@
 </head>
 <body>
 
-  <!-- Laufband -->
-  <div class="ticker" aria-hidden="true">
-    <div class="ticker-track">
-      <span>✶ kein Lift, dafür Cardio inklusive</span>
-      <span>✶ Wasserkocher pfeift in Fis</span>
-      <span>✶ WLAN heisst „nicht_das_wlan_vom_nachbarn“</span>
-      <span>✶ 37 Schallplatten, keine davon von Ed Sheeran</span>
-      <span>✶ Gertrud kommt um 18:40 Uhr vorbei</span>
-      <span>✶ kein Lift, dafür Cardio inklusive</span>
-      <span>✶ Wasserkocher pfeift in Fis</span>
-      <span>✶ WLAN heisst „nicht_das_wlan_vom_nachbarn“</span>
-      <span>✶ 37 Schallplatten, keine davon von Ed Sheeran</span>
-      <span>✶ Gertrud kommt um 18:40 Uhr vorbei</span>
-    </div>
-  </div>
+  <!-- Scroll-Fortschritt -->
+  <div class="progress-line" aria-hidden="true"><span></span></div>
 
   <!-- Navigation -->
-  <nav class="navbar navbar-expand-md sticky-top">
-    <div class="container">
-      <a class="navbar-brand" href="#">Wohnung&nbsp;4b</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Navigation öffnen">
-        <span class="navbar-toggler-icon"></span>
+  <nav class="navbar navbar-expand-lg site-nav fixed-top">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#top">Villa&nbsp;Calce</a>
+      <span class="nav-meta d-none d-xl-inline">43.0590° N · 11.6370° E</span>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Menü öffnen">
+        <span class="toggler-lines" aria-hidden="true"></span>
       </button>
       <div class="collapse navbar-collapse" id="nav">
         <ul class="navbar-nav ms-auto">
-          <li class="nav-item"><a class="nav-link" href="#galerie">Fotos</a></li>
-          <li class="nav-item"><a class="nav-link" href="#wohnung">Die Wohnung</a></li>
-          <li class="nav-item"><a class="nav-link" href="#inventar">Inventar</a></li>
-          <li class="nav-item"><a class="nav-link" href="#extras">Extras</a></li>
-          <li class="nav-item"><a class="nav-link" href="#regeln">Hausregeln</a></li>
-          <li class="nav-item"><a class="nav-link nav-cta" href="#buchen">Buchen</a></li>
+          <li class="nav-item"><a class="nav-link" href="#haus"><span>01</span> Haus</a></li>
+          <li class="nav-item"><a class="nav-link" href="#galerie"><span>02</span> Bilder</a></li>
+          <li class="nav-item"><a class="nav-link" href="#raeume"><span>03</span> Räume</a></li>
+          <li class="nav-item"><a class="nav-link" href="#service"><span>04</span> Service</a></li>
+          <li class="nav-item"><a class="nav-link" href="#preise"><span>05</span> Preise</a></li>
+          <li class="nav-item"><a class="nav-link nav-cta" href="#anfrage">Anfragen <i class="bi bi-arrow-down-right" aria-hidden="true"></i></a></li>
         </ul>
       </div>
     </div>
   </nav>
 
-  <main>
+  <main id="top">
 
     <!-- Hero -->
-    <header class="hero container">
-      <div class="row align-items-center g-5">
-        <div class="col-lg-7">
-          <p class="eyebrow">Ferienwohnung · 4. Stock · ohne Lift · Zürich-ish</p>
-          <h1 class="display-title">Eine Wohnung für Leute, die beim Check-in zuerst die <em>Plattensammlung</em> anschauen.</h1>
-          <p class="lead mt-4">48 m², ein Dachfenster, durch das man genau einen Stern sieht, und eine grüne Tür, die man etwas anheben muss. Kein Design-Hotel. Eher ein Lieblingspulli mit Schlüssel.</p>
-          <div class="d-flex flex-wrap gap-3 mt-4">
-            <a href="#buchen" class="btn btn-niche btn-lg">Anfragen</a>
-            <a href="#inventar" class="btn btn-outline-niche btn-lg">Was ist alles da?</a>
-          </div>
-        </div>
-        <div class="col-lg-5">
-          <div class="polaroid">
-            <img class="polaroid-img" src="img/tuer.jpg" alt="Grüne Haustür mit Messinggriff in einer weissen Fassade" width="800" height="1200">
-            <p class="polaroid-caption">die grüne Tür, Oktober</p>
-          </div>
-          <div class="stamp" aria-hidden="true">kein<br>Lift</div>
+    <header class="hero">
+      <div class="hero-bild" data-speed="0.35">
+        <img src="img/villa/hero.jpg" alt="Hügel des Val d'Orcia mit Zypressenallee und einem Haus in der Ferne" width="2000" height="1333">
+      </div>
+      <div class="hero-inhalt">
+        <p class="label hero-label">Val d'Orcia · Toscana · zu vermieten</p>
+        <h1 class="hero-titel" aria-label="Villa Calce">
+          <span class="zeile"><span class="wort">Villa</span></span>
+          <span class="zeile"><span class="wort">Calce</span></span>
+        </h1>
+        <div class="hero-meta">
+          <p>Kalk. Stein. Licht.<br>Sonst nichts.</p>
+          <p class="label">6 Suiten · 12 Gäste · ab CHF 1'450 / Nacht</p>
+          <a href="#haus" class="scroll-cue" aria-label="Weiter nach unten">
+            <span>Scroll</span><i class="bi bi-arrow-down" aria-hidden="true"></i>
+          </a>
         </div>
       </div>
     </header>
 
-    <!-- Kennzahlen -->
-    <section class="container facts">
-      <div class="row g-3 text-center">
-        <div class="col-6 col-md-3"><div class="fact"><span class="fact-num">48</span><span class="fact-label">m² Altbau</span></div></div>
-        <div class="col-6 col-md-3"><div class="fact"><span class="fact-num">84</span><span class="fact-label">Treppenstufen</span></div></div>
-        <div class="col-6 col-md-3"><div class="fact"><span class="fact-num">2</span><span class="fact-label">Gäste, max.</span></div></div>
-        <div class="col-6 col-md-3"><div class="fact"><span class="fact-num">1</span><span class="fact-label">Stern sichtbar</span></div></div>
+    <!-- Laufband -->
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee-track">
+        <span>420 m²</span><span>✕</span><span>6 Suiten</span><span>✕</span><span>Pool 18 m</span><span>✕</span><span>3 ha Oliven</span><span>✕</span><span>0 Nachbarn</span><span>✕</span><span>1 Zypressenallee</span><span>✕</span>
+        <span>420 m²</span><span>✕</span><span>6 Suiten</span><span>✕</span><span>Pool 18 m</span><span>✕</span><span>3 ha Oliven</span><span>✕</span><span>0 Nachbarn</span><span>✕</span><span>1 Zypressenallee</span><span>✕</span>
       </div>
-    </section>
+    </div>
 
-    <!-- Galerie: Museum der Kleinigkeiten -->
-    <section id="galerie" class="museum">
-      <div class="container">
-        <div class="museum-head">
-          <div>
-            <p class="eyebrow mb-2">Sammlung Wohnung 4b · Dauerausstellung</p>
-            <h2 class="section-title mb-2">Museum der Kleinigkeiten</h2>
-            <p class="museum-intro">Zwölf Exponate aus 48 m². Eintritt frei, Fotografieren erlaubt, Anfassen nur bei Herbert (Dienstag).</p>
+    <!-- 01 Haus -->
+    <section id="haus" class="sektion">
+      <div class="container-fluid raster">
+        <div class="row g-0">
+          <div class="col-lg-3 spalte-label">
+            <p class="label">01 / Haus</p>
           </div>
-          <div class="museum-ticket" aria-hidden="true">
-            <span>Eintritt</span>
-            <strong>CHF 0.–</strong>
-            <span>Nr. 000484</span>
+          <div class="col-lg-9">
+            <p class="manifest" data-split>
+              Ein Bauernhaus von 1891, bis auf die Mauern zurückgebaut und mit Kalk neu verputzt. Keine Vorhänge, keine Bilder, keine Dekoration. Nur dicke Wände, kühle Böden und Fenster, die genau dorthin zeigen, wo die Hügel am schönsten sind.
+            </p>
           </div>
         </div>
-
-        <div class="museum-filter" role="group" aria-label="Exponate nach Raum filtern">
-          <button type="button" class="museum-chip is-active" data-raum="alle">Alle <span class="count"></span></button>
-          <button type="button" class="museum-chip" data-raum="Wohnzimmer">Wohnzimmer</button>
-          <button type="button" class="museum-chip" data-raum="Küche">Küche</button>
-          <button type="button" class="museum-chip" data-raum="Schlafzimmer">Schlafzimmer</button>
-          <button type="button" class="museum-chip" data-raum="Treppenhaus">Treppenhaus</button>
-          <button type="button" class="museum-chip" data-raum="Bewohner">Bewohner</button>
-          <button type="button" id="museum-zufall" class="museum-chip museum-chip-zufall"><i class="bi bi-shuffle" aria-hidden="true"></i> Zufälliges Exponat</button>
-        </div>
-
-        <!-- Die Exponate werden in app.js aus einer Liste erzeugt -->
-        <div id="museum-grid" class="museum-grid" aria-live="polite"></div>
-
-        <p class="museum-hint">Klick auf ein Exponat für die Vitrine. Mit ← und → blätterst du, mit Esc gehst du zurück in den Flur.</p>
-      </div>
-    </section>
-
-    <!-- Die Wohnung -->
-    <section id="wohnung" class="container section">
-      <div class="row g-5">
-        <div class="col-lg-4">
-          <h2 class="section-title">Die Wohnung</h2>
-          <p class="text-muted-niche">Kurz gesagt: klein, warm, etwas schief.</p>
-        </div>
-        <div class="col-lg-8">
-          <div class="row g-4">
-            <div class="col-md-6">
-              <div class="card-niche h-100">
-                <h3>Wohnzimmer</h3>
-                <p>Ein Sofa, das nach Bibliothek riecht. Ein Plattenspieler von 1979. Eine Leselampe mit genau drei Helligkeitsstufen: Kerze, Krimi und Verhör.</p>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="card-niche h-100">
-                <h3>Schlafzimmer</h3>
-                <p>Doppelbett unter der Dachschräge. Wer über 1.85 m ist, lernt hier Demut. Das Dachfenster lässt sich öffnen, der Stern bleibt.</p>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="card-niche h-100">
-                <h3>Küche</h3>
-                <p>Zwei Herdplatten, eine Bialetti, ein Wasserkocher, der in Fis pfeift. Gewürzregal sortiert nach Gefühl, nicht nach Alphabet.</p>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="card-niche h-100">
-                <h3>Bad</h3>
-                <p>Dusche mit gutem Wasserdruck (wichtig, wir wissen es). Handtücher in einer Farbe, die der Hersteller „Hafernebel“ nennt.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Inventar -->
-    <section id="inventar" class="section section-alt">
-      <div class="container">
-        <div class="row g-5">
-          <div class="col-lg-4">
-            <h2 class="section-title">Inventar</h2>
-            <p class="text-muted-niche">Die Dinge, nach denen niemand fragt, die aber alle bemerken.</p>
-          </div>
-          <div class="col-lg-8">
-            <ul class="inventory">
-              <li><span>Schallplatten</span><span class="dots"></span><span>37 Stück</span></li>
-              <li><span>davon Jazz, den niemand kennt</span><span class="dots"></span><span>11</span></li>
-              <li><span>Brettspiele mit allen Teilen</span><span class="dots"></span><span>3 von 4</span></li>
-              <li><span>Zimmerpflanze „Herbert“ (giessen: Dienstag)</span><span class="dots"></span><span>1</span></li>
-              <li><span>Taschenbücher mit Eselsohren</span><span class="dots"></span><span>ca. 60</span></li>
-              <li><span>Kaffeetassen, alle verschieden</span><span class="dots"></span><span>9</span></li>
-              <li><span>Regenschirm, leicht verbogen</span><span class="dots"></span><span>1</span></li>
-              <li><span>Fernseher</span><span class="dots"></span><span>bewusst 0</span></li>
-            </ul>
-            <div class="funfact mt-4">
-              <span class="funfact-label">Fun Fact</span>
-              <p id="funfact-text" class="mb-0">Der Vormieter hat die Wand im Flur „Salbei“ gestrichen. Es ist eher Pistazie.</p>
-              <button id="btn-funfact" class="btn btn-sm btn-outline-niche mt-3" type="button">noch einer</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Extras: Platzhalter für die API-Features -->
-    <section id="extras" class="container section">
-      <h2 class="section-title">Extras</h2>
-      <p class="text-muted-niche mb-4">Kleine Dienste für deinen Aufenthalt. Werden gerade gebaut.</p>
-
-      <div class="row g-4">
-        <!-- a) Katzenbild -->
-        <div class="col-md-6 col-xl-4">
-          <div class="card-niche feature h-100">
-            <span class="badge-live">live</span>
-            <h3>Gertrud-Ersatz</h3>
-            <p>Die Nachbarskatze kommt nur um 18:40 Uhr. Für alle anderen Zeiten: eine zufällige Katze.</p>
-            <div id="cat-result" class="placeholder-box" aria-live="polite">Hier erscheint ein Katzenbild</div>
-            <button id="btn-cat" class="btn btn-outline-niche mt-3" type="button">Katze anfordern</button>
-          </div>
-        </div>
-
-        <!-- b) Bitcoin -->
-        <div class="col-md-6 col-xl-4">
-          <div class="card-niche feature h-100">
-            <span class="badge-live">live</span>
-            <h3>Bitcoin-Kurs</h3>
-            <p>Wir akzeptieren keine Bitcoins. Aber falls du beim Frühstück flexen willst: der aktuelle Kurs in USD und CHF.</p>
-            <div id="btc-result" class="placeholder-box" aria-live="polite">USD: ... · CHF: ...</div>
-            <button id="btn-btc" class="btn btn-outline-niche mt-3" type="button">Kurs laden</button>
-          </div>
-        </div>
-
-        <!-- c) Wetter -->
-        <div class="col-md-6 col-xl-4">
-          <div class="card-niche feature h-100">
-            <span class="badge-live">live</span>
-            <h3>Dachfenster-Wetter</h3>
-            <p>Ob du das Fenster heute offen lassen kannst. Zürich, Höchst- und Tiefstwert, Niederschlag.</p>
-            <div id="weather-result" class="placeholder-box" aria-live="polite">Tmax ... · Tmin ... · Regen ...</div>
-            <button id="btn-weather" class="btn btn-outline-niche mt-3" type="button">Wetter abrufen</button>
-          </div>
-        </div>
-
-        <!-- c+) Wetterverlauf 5 Tage (HighCharts) -->
-        <div class="col-12">
-          <div class="card-niche feature">
-            <span class="badge-live">live</span>
-            <h3>Dachfenster-Prognose · 5 Tage</h3>
-            <p>Temperatur und Niederschlag für Zürich, Stunde für Stunde. Modell der MeteoSchweiz, Planung der Gertrud-Besuche nicht inbegriffen.</p>
-            <div id="weather-chart" class="placeholder-box placeholder-chart" aria-live="polite">Hier erscheint der Wetterverlauf</div>
-            <button id="btn-weather-chart" class="btn btn-outline-niche mt-3" type="button">Verlauf laden</button>
-          </div>
-        </div>
-
-        <!-- d) Ladestationen -->
-        <div class="col-md-6 col-xl-6">
-          <div class="card-niche feature h-100">
-            <span class="badge-live">live</span>
-            <h3>Strom für dein Auto</h3>
-            <p>Die fünf nächsten Ladestationen. Für den Fall, dass du nicht mit dem Velo kommst (verständlich, 84 Stufen).</p>
-            <form id="charger-plz-form" class="d-flex gap-2 mb-3" novalidate>
-              <label for="charger-plz" class="visually-hidden">Postleitzahl</label>
-              <input id="charger-plz" class="form-control form-control-niche" type="text" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" placeholder="PLZ, z. B. 8400">
-              <button id="btn-charger-plz" class="btn btn-outline-niche text-nowrap" type="submit">Nach PLZ</button>
-            </form>
-            <p id="charger-info" class="charger-info mb-2">Standard: rund um Winterthur</p>
-            <ol id="charger-result" class="placeholder-box placeholder-list" aria-live="polite">
-              <li>Ladestation ...</li>
-              <li>Ladestation ...</li>
-              <li>Ladestation ...</li>
-            </ol>
-            <button id="btn-charger" class="btn btn-outline-niche mt-3" type="button">Winterthur suchen</button>
-          </div>
-        </div>
-
-        <!-- e) Karte -->
-        <div class="col-md-12 col-xl-6">
-          <div class="card-niche feature h-100">
-            <span class="badge-live">live</span>
-            <h3>Wo ist die grüne Tür?</h3>
-            <p>Kartenausschnitt mit der Wohnung in der Mitte. Die Tür selbst sieht man leider nicht.</p>
-            <form id="map-search-form" class="d-flex gap-2 mb-3" novalidate>
-              <label for="map-search" class="visually-hidden">Ort suchen</label>
-              <input id="map-search" class="form-control form-control-niche" type="text" maxlength="60" placeholder="Ort, z. B. Bern">
-              <button id="btn-map-search" class="btn btn-outline-niche text-nowrap" type="submit">Ort suchen</button>
-            </form>
-            <p id="map-info" class="charger-info mb-2">Tipp: Klick auf eine Ladestation zeigt sie hier auf der Karte.</p>
-            <div id="map" class="placeholder-box placeholder-map">Hier erscheint die Karte</div>
-            <button id="btn-map" class="btn btn-outline-niche mt-3" type="button">Karte zeigen</button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Hausregeln -->
-    <section id="regeln" class="section section-alt">
-      <div class="container">
-        <div class="row g-5">
-          <div class="col-lg-4">
-            <h2 class="section-title">Hausregeln</h2>
-            <p class="text-muted-niche">Wenige, aber ernst gemeint.</p>
-            <figure class="wanted mt-4">
-              <img src="img/gertrud.jpg" alt="Gertrud, die Nachbarskatze" loading="lazy" width="1200" height="675">
-              <figcaption><strong>Gesucht:</strong> niemand. Gertrud findet dich.</figcaption>
+        <div class="row g-0 haus-bilder">
+          <div class="col-md-7 bild-block">
+            <figure class="bild-maske" data-reveal>
+              <img src="img/villa/pool.jpg" alt="Schmaler Infinity-Pool, der in eine neblige Hügellandschaft übergeht" loading="lazy" width="931" height="1400" data-parallax>
             </figure>
+            <figcaption class="label bild-text">Fig. 01 · Pool, 18 × 3 m, Wasser 27 °C</figcaption>
           </div>
-          <div class="col-lg-8">
-            <ol class="rules">
-              <li>Die grüne Tür beim Schliessen leicht anheben. Sie dankt es dir.</li>
-              <li>Platten zurück in die Hülle, Hülle zurück ins Regal, Regal bleibt, wo es ist.</li>
-              <li>Gertrud darf rein. Gertrud darf nicht gefüttert werden. Gertrud wird so tun, als wüsstest du das nicht.</li>
-              <li>Ab 22 Uhr leise. Frau Huber im 3. Stock hört alles, ausser die Türklingel.</li>
-              <li>Herbert am Dienstag giessen. Nicht am Mittwoch. Herbert merkt das.</li>
-            </ol>
+          <div class="col-md-5 bild-block versetzt">
+            <figure class="bild-maske" data-reveal>
+              <img src="img/villa/beton.jpg" alt="Geschwungene Wände aus hellem Sichtbeton" loading="lazy" width="933" height="1400" data-parallax>
+            </figure>
+            <figcaption class="label bild-text">Fig. 02 · Treppenkern, Kalkputz auf Beton</figcaption>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Buchen -->
-    <section id="buchen" class="container section">
-      <div class="ticket">
-        <div class="ticket-main">
-          <p class="eyebrow mb-2">Preise</p>
-          <h2 class="section-title mb-3">CHF 118.– pro Nacht</h2>
-          <p class="mb-1">Mindestens 2 Nächte. Ab 7 Nächten gibt es eine Platte geschenkt, du darfst sie aussuchen (fast alle).</p>
-          <p class="text-muted-niche mb-0">Endreinigung CHF 40.–, Bettwäsche und Hafernebel-Handtücher inklusive.</p>
-        </div>
-        <div class="ticket-stub">
-          <p class="stub-label">Anfrage</p>
-          <p class="stub-text">Daten wählen, kurz vorstellen, fertig. Die Tür freut sich auf dich.</p>
-          <a href="#anfrage" class="btn btn-niche w-100">Zum Formular</a>
+    <!-- Zahlen -->
+    <section class="zahlen" aria-label="Die Villa in Zahlen">
+      <div class="zahl"><span class="zahl-wert" data-count="420">0</span><span class="zahl-einheit">m²</span><span class="label">Wohnfläche</span></div>
+      <div class="zahl"><span class="zahl-wert" data-count="6">0</span><span class="zahl-einheit">Suiten</span><span class="label">je mit Bad</span></div>
+      <div class="zahl"><span class="zahl-wert" data-count="18">0</span><span class="zahl-einheit">m</span><span class="label">Pool</span></div>
+      <div class="zahl"><span class="zahl-wert" data-count="3">0</span><span class="zahl-einheit">ha</span><span class="label">Olivenhain</span></div>
+      <div class="zahl"><span class="zahl-wert" data-count="0">0</span><span class="zahl-einheit">Nachbarn</span><span class="label">in Sichtweite</span></div>
+      <div class="zahl"><span class="zahl-wert" data-count="1891">0</span><span class="zahl-einheit"></span><span class="label">Baujahr</span></div>
+    </section>
+
+    <!-- 02 Galerie: horizontal scrollen -->
+    <section id="galerie" class="galerie">
+      <div class="galerie-kopf">
+        <p class="label">02 / Bilder</p>
+        <h2 class="titel-gross">Sieben Blicke</h2>
+      </div>
+      <div class="galerie-spur">
+        <figure class="panel panel-breit">
+          <img src="img/villa/garten.jpg" alt="Garten mit Zypressen und Pool vor dem Steinhaus" loading="lazy" width="1400" height="1120">
+          <figcaption><span class="label">01</span> Giardino. Zypressen, gepflanzt 1952.</figcaption>
+        </figure>
+        <figure class="panel panel-hoch">
+          <img src="img/villa/wohnen.jpg" alt="Minimalistisches Wohnzimmer in hellen Naturtönen" loading="lazy" width="933" height="1400">
+          <figcaption><span class="label">02</span> Salone. Leinen, Eiche, Stille.</figcaption>
+        </figure>
+        <figure class="panel panel-breit">
+          <img src="img/villa/abend.jpg" alt="Sonnenuntergang über den Hügeln der Toskana" loading="lazy" width="1600" height="1066">
+          <figcaption><span class="label">03</span> 19:42. Der Grund, warum die Terrasse nach Westen zeigt.</figcaption>
+        </figure>
+        <figure class="panel panel-hoch">
+          <img src="img/villa/pool.jpg" alt="Infinity-Pool im Nebel" loading="lazy" width="931" height="1400">
+          <figcaption><span class="label">04</span> Piscina. Morgens um sieben gehört sie dir.</figcaption>
+        </figure>
+        <figure class="panel panel-breit">
+          <img src="img/villa/reben.jpg" alt="Weinberg mit Weg auf einem Hügel" loading="lazy" width="1400" height="933">
+          <figcaption><span class="label">05</span> Vigna. Der Nachbar ist ein Weinberg.</figcaption>
+        </figure>
+        <figure class="panel panel-breit">
+          <img src="img/villa/olive.jpg" alt="Zweige eines Olivenbaums" loading="lazy" width="1400" height="1050">
+          <figcaption><span class="label">06</span> Uliveto. 412 Bäume, Ernte im November.</figcaption>
+        </figure>
+        <figure class="panel panel-breit">
+          <img src="img/villa/huegel.jpg" alt="Weite Hügellandschaft mit Olivenbäumen im Abendlicht" loading="lazy" width="1600" height="1067">
+          <figcaption><span class="label">07</span> Orizzonte. 32 km bis zum nächsten Hochhaus.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- 03 Räume -->
+    <section id="raeume" class="sektion">
+      <div class="container-fluid raster">
+        <div class="row g-0">
+          <div class="col-lg-3 spalte-label"><p class="label">03 / Räume</p></div>
+          <div class="col-lg-9">
+            <ul class="raum-liste">
+              <li data-bild="img/villa/wohnen.jpg"><span class="raum-nr">01</span><span class="raum-name">Salone</span><span class="raum-info">86 m² · Kamin · Plattenspieler</span></li>
+              <li data-bild="img/villa/beton.jpg"><span class="raum-nr">02</span><span class="raum-name">Cucina</span><span class="raum-info">Kochinsel aus Travertin · 6 Feuer</span></li>
+              <li data-bild="img/villa/calce.jpg"><span class="raum-nr">03</span><span class="raum-name">Suiten</span><span class="raum-info">6 × Doppelbett · Leinen · eigenes Bad</span></li>
+              <li data-bild="img/villa/pool.jpg"><span class="raum-nr">04</span><span class="raum-name">Piscina</span><span class="raum-info">18 × 3 m · Salzwasser · beheizt</span></li>
+              <li data-bild="img/villa/olive.jpg"><span class="raum-nr">05</span><span class="raum-name">Uliveto</span><span class="raum-info">3 ha · eigenes Öl zum Mitnehmen</span></li>
+              <li data-bild="img/villa/reben.jpg"><span class="raum-nr">06</span><span class="raum-name">Cantina</span><span class="raum-info">Gewölbekeller · 340 Flaschen · 14 °C</span></li>
+            </ul>
+          </div>
         </div>
       </div>
+      <div class="raum-vorschau" aria-hidden="true"><img src="img/villa/wohnen.jpg" alt=""></div>
+    </section>
 
-      <!-- Buchungsformular -->
-      <form id="anfrage" class="booking mt-5" novalidate>
-        <div class="row g-5">
-          <div class="col-lg-8">
+    <!-- 04 Service: die API-Features aus dem Auftrag -->
+    <section id="service" class="sektion sektion-dunkel">
+      <div class="container-fluid raster">
+        <div class="row g-0 mb-5">
+          <div class="col-lg-3 spalte-label"><p class="label">04 / Service</p></div>
+          <div class="col-lg-9">
+            <h2 class="titel-gross">Bevor du losfährst</h2>
+            <p class="einleitung">Die meisten Gäste kommen aus der Schweiz. Darum hier alles, was man vor 6 Stunden Autobahn wissen will. Und eine Katze.</p>
+          </div>
+        </div>
 
-            <fieldset class="booking-group">
-              <legend>01 · Wann kommst du?</legend>
-              <div class="row g-3">
-                <div class="col-sm-6">
-                  <label for="anreise" class="form-label">Anreise</label>
-                  <input id="anreise" name="anreise" type="date" class="form-control form-control-booking" required>
-                  <div class="invalid-feedback">Bitte ein Anreisedatum ab heute wählen.</div>
-                </div>
-                <div class="col-sm-6">
-                  <label for="abreise" class="form-label">Abreise</label>
-                  <input id="abreise" name="abreise" type="date" class="form-control form-control-booking" required>
-                  <div class="invalid-feedback" id="abreise-feedback">Bitte mindestens 2 Nächte nach der Anreise.</div>
-                </div>
-                <div class="col-sm-6">
-                  <label for="gaeste" class="form-label">Gäste</label>
-                  <select id="gaeste" name="gaeste" class="form-select form-control-booking" required>
-                    <option value="1">1 Person</option>
-                    <option value="2" selected>2 Personen</option>
-                  </select>
-                  <div class="form-text">Mehr passen nicht unter die Dachschräge.</div>
-                </div>
-                <div class="col-sm-6">
-                  <label for="anlass" class="form-label">Anlass <span class="optional">(optional)</span></label>
-                  <select id="anlass" name="anlass" class="form-select form-control-booking">
-                    <option value="">Bitte wählen</option>
-                    <option>Städtetrip</option>
-                    <option>Platten hören und nichts tun</option>
-                    <option>Gertrud kennenlernen</option>
-                    <option>Geschäftlich (wir verraten nichts)</option>
-                    <option>Etwas anderes</option>
-                  </select>
-                </div>
-              </div>
-            </fieldset>
+        <div class="service-raster">
 
-            <fieldset class="booking-group">
-              <legend>02 · Wer bist du?</legend>
-              <div class="row g-3">
-                <div class="col-sm-6">
-                  <label for="vorname" class="form-label">Vorname</label>
-                  <input id="vorname" name="vorname" type="text" class="form-control form-control-booking" autocomplete="given-name" minlength="2" maxlength="50" required>
-                  <div class="invalid-feedback">Bitte deinen Vornamen angeben.</div>
-                </div>
-                <div class="col-sm-6">
-                  <label for="nachname" class="form-label">Nachname</label>
-                  <input id="nachname" name="nachname" type="text" class="form-control form-control-booking" autocomplete="family-name" minlength="2" maxlength="50" required>
-                  <div class="invalid-feedback">Bitte deinen Nachnamen angeben.</div>
-                </div>
-                <div class="col-sm-7">
-                  <label for="email" class="form-label">E-Mail</label>
-                  <input id="email" name="email" type="email" class="form-control form-control-booking" autocomplete="email" placeholder="name@beispiel.ch" maxlength="100" required>
-                  <div class="invalid-feedback">Bitte eine gültige E-Mail-Adresse.</div>
-                </div>
-                <div class="col-sm-5">
-                  <label for="handy" class="form-label">Handy</label>
-                  <input id="handy" name="handy" type="tel" class="form-control form-control-booking" autocomplete="tel" placeholder="079 123 45 67" pattern="^(\+41|0041|0)\s?7[5-9](\s?\d){7}$" required>
-                  <div class="invalid-feedback">Bitte eine Schweizer Handynummer, z. B. 079 123 45 67.</div>
-                </div>
-                <div class="col-12">
-                  <span class="form-label d-block">Wie sollen wir uns melden?</span>
-                  <div class="choice-row">
-                    <input class="btn-check" type="radio" name="kontaktart" id="kontakt-mail" value="E-Mail" checked>
-                    <label class="btn btn-choice" for="kontakt-mail"><i class="bi bi-envelope" aria-hidden="true"></i> E-Mail</label>
-                    <input class="btn-check" type="radio" name="kontaktart" id="kontakt-sms" value="SMS">
-                    <label class="btn btn-choice" for="kontakt-sms"><i class="bi bi-chat-dots" aria-hidden="true"></i> SMS</label>
-                    <input class="btn-check" type="radio" name="kontaktart" id="kontakt-anruf" value="Anruf">
-                    <label class="btn btn-choice" for="kontakt-anruf"><i class="bi bi-telephone" aria-hidden="true"></i> Anruf</label>
+          <!-- a) Katzenbild -->
+          <article class="kachel">
+            <header class="kachel-kopf"><span class="label">A · The Cat API</span><span class="status">live</span></header>
+            <h3>Villa-Katze</h3>
+            <p>Es gibt keine. Aber falls du eine vermisst: hier ist eine zufällige.</p>
+            <div id="cat-result" class="ergebnis ergebnis-bild" aria-live="polite">Noch keine Katze</div>
+            <button id="btn-cat" class="knopf" type="button">Katze laden <i class="bi bi-arrow-right" aria-hidden="true"></i></button>
+          </article>
+
+          <!-- b) Bitcoin -->
+          <article class="kachel">
+            <header class="kachel-kopf"><span class="label">B · CoinGecko</span><span class="status">live</span></header>
+            <h3>Bitcoin-Kurs</h3>
+            <p>Wir nehmen keine Bitcoins. Für den Fall, dass du trotzdem nachrechnen willst, wie viele Nächte einer ist.</p>
+            <div id="btc-result" class="ergebnis" aria-live="polite">USD … · CHF …</div>
+            <button id="btn-btc" class="knopf" type="button">Kurs laden <i class="bi bi-arrow-right" aria-hidden="true"></i></button>
+          </article>
+
+          <!-- c) Wetter -->
+          <article class="kachel">
+            <header class="kachel-kopf"><span class="label">C · Open-Meteo</span><span class="status">live</span></header>
+            <h3>Wetter in Zürich</h3>
+            <p>Am Abfahrtsort. Damit du weisst, wovor du wegfährst.</p>
+            <div id="weather-result" class="ergebnis" aria-live="polite">Tmax … · Tmin … · Regen …</div>
+            <button id="btn-weather" class="knopf" type="button">Wetter laden <i class="bi bi-arrow-right" aria-hidden="true"></i></button>
+          </article>
+
+          <!-- c+) Wetterverlauf mit HighCharts -->
+          <article class="kachel kachel-breit">
+            <header class="kachel-kopf"><span class="label">C+ · HighCharts · MeteoSchweiz</span><span class="status">live</span></header>
+            <h3>Zürich gegen Val d'Orcia · 5 Tage</h3>
+            <p>Temperatur und Niederschlag in Zürich, stündlich. Dazu die Temperatur bei der Villa. Die Differenz ist das Argument.</p>
+            <div id="weather-chart" class="ergebnis ergebnis-chart" aria-live="polite">Hier erscheint der Verlauf</div>
+            <button id="btn-weather-chart" class="knopf" type="button">Verlauf laden <i class="bi bi-arrow-right" aria-hidden="true"></i></button>
+          </article>
+
+          <!-- d) Ladestationen -->
+          <article class="kachel kachel-hoch">
+            <header class="kachel-kopf"><span class="label">D · BFE / opendata.swiss</span><span class="status">live</span></header>
+            <h3>Laden vor der Fahrt</h3>
+            <p>Die fünf nächsten Ladestationen ab Winterthur. Oder in deiner PLZ.</p>
+            <form id="charger-plz-form" class="feld-zeile" novalidate>
+              <label for="charger-plz" class="visually-hidden">Postleitzahl</label>
+              <input id="charger-plz" class="form-control feld" type="text" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" placeholder="PLZ, z. B. 8400">
+              <button id="btn-charger-plz" class="knopf knopf-klein" type="submit">Suchen</button>
+            </form>
+            <p id="charger-info" class="label info-zeile">Standard: Winterthur Zentrum</p>
+            <ol id="charger-result" class="ergebnis ergebnis-liste" aria-live="polite">
+              <li>Ladestation …</li>
+              <li>Ladestation …</li>
+              <li>Ladestation …</li>
+            </ol>
+            <button id="btn-charger" class="knopf" type="button">Winterthur suchen <i class="bi bi-arrow-right" aria-hidden="true"></i></button>
+          </article>
+
+          <!-- e) Karte -->
+          <article class="kachel kachel-breit kachel-hoch">
+            <header class="kachel-kopf"><span class="label">E · Leaflet · geo.admin.ch</span><span class="status">live</span></header>
+            <h3>Wo die Villa steht</h3>
+            <p>Gib deinen Abfahrtsort in der Schweiz ein. Die Karte zeigt Strecke und Luftlinie. Ein Klick auf eine Ladestation zeigt sie hier.</p>
+            <form id="map-search-form" class="feld-zeile" novalidate>
+              <label for="map-search" class="visually-hidden">Abfahrtsort suchen</label>
+              <input id="map-search" class="form-control feld" type="text" maxlength="60" placeholder="Abfahrtsort, z. B. Bern">
+              <button id="btn-map-search" class="knopf knopf-klein" type="submit">Suchen</button>
+            </form>
+            <p id="map-info" class="label info-zeile">Villa Calce, Val d'Orcia</p>
+            <div id="map" class="ergebnis ergebnis-karte">Hier erscheint die Karte</div>
+            <button id="btn-map" class="knopf" type="button">Karte zeigen <i class="bi bi-arrow-right" aria-hidden="true"></i></button>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- 05 Preise -->
+    <section id="preise" class="sektion">
+      <div class="container-fluid raster">
+        <div class="row g-0">
+          <div class="col-lg-3 spalte-label"><p class="label">05 / Preise</p></div>
+          <div class="col-lg-9">
+            <h2 class="titel-gross">Pro Nacht, ganzes Haus</h2>
+            <table class="preis-tabelle">
+              <caption class="visually-hidden">Preise pro Nacht nach Saison</caption>
+              <thead>
+                <tr><th scope="col">Saison</th><th scope="col">Zeitraum</th><th scope="col" class="text-end">CHF / Nacht</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Bassa</td><td>Nov bis März</td><td class="text-end">1'450</td></tr>
+                <tr><td>Media</td><td>April, Mai, Oktober</td><td class="text-end">1'850</td></tr>
+                <tr><td>Alta</td><td>Juni bis September</td><td class="text-end">2'400</td></tr>
+              </tbody>
+            </table>
+            <p class="label mt-3">Mindestens 3 Nächte · Endreinigung CHF 450 · Ab 7 Nächten: ein Abend mit Köchin Lucia</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 06 Anfrage: Buchungsformular -->
+    <section id="anfrage-bereich" class="sektion sektion-kalk">
+      <div class="container-fluid raster">
+        <div class="row g-0 mb-4">
+          <div class="col-lg-3 spalte-label"><p class="label">06 / Anfrage</p></div>
+          <div class="col-lg-9"><h2 class="titel-gross">Haus anfragen</h2></div>
+        </div>
+
+        <form id="anfrage" class="buchung" novalidate>
+          <div class="row g-0">
+            <div class="col-lg-8 buchung-felder">
+
+              <fieldset class="gruppe">
+                <legend class="label">01 · Zeitraum</legend>
+                <div class="row g-4">
+                  <div class="col-sm-6">
+                    <label for="anreise" class="form-label label">Anreise</label>
+                    <input id="anreise" name="anreise" type="date" class="form-control feld" required>
+                    <div class="invalid-feedback">Bitte ein Anreisedatum ab heute.</div>
+                  </div>
+                  <div class="col-sm-6">
+                    <label for="abreise" class="form-label label">Abreise</label>
+                    <input id="abreise" name="abreise" type="date" class="form-control feld" required>
+                    <div class="invalid-feedback">Mindestens 3 Nächte nach der Anreise.</div>
+                  </div>
+                  <div class="col-sm-6">
+                    <label for="gaeste" class="form-label label">Gäste</label>
+                    <select id="gaeste" name="gaeste" class="form-select feld" required>
+                      <option value="2">2 Gäste</option>
+                      <option value="4">4 Gäste</option>
+                      <option value="6" selected>6 Gäste</option>
+                      <option value="8">8 Gäste</option>
+                      <option value="10">10 Gäste</option>
+                      <option value="12">12 Gäste</option>
+                    </select>
+                  </div>
+                  <div class="col-sm-6">
+                    <label for="anlass" class="form-label label">Anlass <span class="optional">(optional)</span></label>
+                    <select id="anlass" name="anlass" class="form-select feld">
+                      <option value="">Bitte wählen</option>
+                      <option>Ferien mit Familie</option>
+                      <option>Ferien mit Freunden</option>
+                      <option>Retreat / Offsite</option>
+                      <option>Hochzeit im kleinen Kreis</option>
+                      <option>Einfach nichts tun</option>
+                    </select>
                   </div>
                 </div>
-              </div>
-            </fieldset>
+              </fieldset>
 
-            <fieldset class="booking-group">
-              <legend>03 · Noch etwas?</legend>
-              <label for="nachricht" class="form-label">Nachricht <span class="optional">(optional)</span></label>
-              <textarea id="nachricht" name="nachricht" class="form-control form-control-booking" rows="4" maxlength="500" placeholder="Lieblingsplatte, Ankunftszeit, Fragen zu Herbert …"></textarea>
-              <div class="form-text text-end"><span id="nachricht-zaehler">0</span> / 500</div>
+              <fieldset class="gruppe">
+                <legend class="label">02 · Kontakt</legend>
+                <div class="row g-4">
+                  <div class="col-sm-6">
+                    <label for="vorname" class="form-label label">Vorname</label>
+                    <input id="vorname" name="vorname" type="text" class="form-control feld" autocomplete="given-name" minlength="2" maxlength="50" required>
+                    <div class="invalid-feedback">Bitte deinen Vornamen.</div>
+                  </div>
+                  <div class="col-sm-6">
+                    <label for="nachname" class="form-label label">Nachname</label>
+                    <input id="nachname" name="nachname" type="text" class="form-control feld" autocomplete="family-name" minlength="2" maxlength="50" required>
+                    <div class="invalid-feedback">Bitte deinen Nachnamen.</div>
+                  </div>
+                  <div class="col-sm-7">
+                    <label for="email" class="form-label label">E-Mail</label>
+                    <input id="email" name="email" type="email" class="form-control feld" autocomplete="email" placeholder="name@beispiel.ch" maxlength="100" required>
+                    <div class="invalid-feedback">Bitte eine gültige E-Mail-Adresse.</div>
+                  </div>
+                  <div class="col-sm-5">
+                    <label for="handy" class="form-label label">Telefon</label>
+                    <input id="handy" name="handy" type="tel" class="form-control feld" autocomplete="tel" placeholder="+41 79 123 45 67" pattern="^\+?[0-9 ]{9,18}$" required>
+                    <div class="invalid-feedback">Bitte eine Telefonnummer, z. B. +41 79 123 45 67.</div>
+                  </div>
+                  <div class="col-12">
+                    <span class="form-label label d-block">Antwort per</span>
+                    <div class="wahl-zeile">
+                      <input class="btn-check" type="radio" name="kontaktart" id="kontakt-mail" value="E-Mail" checked>
+                      <label class="wahl" for="kontakt-mail">E-Mail</label>
+                      <input class="btn-check" type="radio" name="kontaktart" id="kontakt-anruf" value="Anruf">
+                      <label class="wahl" for="kontakt-anruf">Anruf</label>
+                      <input class="btn-check" type="radio" name="kontaktart" id="kontakt-whatsapp" value="WhatsApp">
+                      <label class="wahl" for="kontakt-whatsapp">WhatsApp</label>
+                    </div>
+                  </div>
+                </div>
+              </fieldset>
 
-              <div class="form-check mt-3">
-                <input id="regeln-ok" name="hausregeln" class="form-check-input" type="checkbox" value="ja" required>
-                <label for="regeln-ok" class="form-check-label">Ich habe die <a href="#regeln">Hausregeln</a> gelesen und hebe die Tür beim Schliessen an.</label>
-                <div class="invalid-feedback">Ohne Hausregeln keine Tür.</div>
-              </div>
-              <div class="form-check mt-2">
-                <input id="datenschutz-ok" name="datenschutz" class="form-check-input" type="checkbox" value="ja" required>
-                <label for="datenschutz-ok" class="form-check-label">Ich akzeptiere die <a href="https://www.edoeb.admin.ch/de/datenschutz" target="_blank" rel="noopener">Datenschutzbestimmungen <i class="bi bi-box-arrow-up-right" aria-hidden="true"></i></a>.</label>
-                <div class="invalid-feedback">Bitte bestätigen.</div>
-              </div>
-            </fieldset>
+              <fieldset class="gruppe">
+                <legend class="label">03 · Nachricht</legend>
+                <label for="nachricht" class="form-label label">Wünsche <span class="optional">(optional)</span></label>
+                <textarea id="nachricht" name="nachricht" class="form-control feld" rows="4" maxlength="500" placeholder="Ankunftszeit, Allergien, Lieblingswein …"></textarea>
+                <div class="form-text label text-end"><span id="nachricht-zaehler">0</span> / 500</div>
+
+                <div class="form-check mt-4">
+                  <input id="regeln-ok" name="hausregeln" class="form-check-input" type="checkbox" value="ja" required>
+                  <label for="regeln-ok" class="form-check-label">Keine Partys mit Musik nach 23 Uhr. Die Hügel tragen den Schall bis nach Pienza.</label>
+                  <div class="invalid-feedback">Bitte bestätigen.</div>
+                </div>
+                <div class="form-check mt-2">
+                  <input id="datenschutz-ok" name="datenschutz" class="form-check-input" type="checkbox" value="ja" required>
+                  <label for="datenschutz-ok" class="form-check-label">Ich akzeptiere die <a href="https://www.edoeb.admin.ch/de/datenschutz" target="_blank" rel="noopener">Datenschutzbestimmungen <i class="bi bi-box-arrow-up-right" aria-hidden="true"></i></a>.</label>
+                  <div class="invalid-feedback">Bitte bestätigen.</div>
+                </div>
+              </fieldset>
+            </div>
+
+            <!-- Zusammenfassung, wird live berechnet -->
+            <div class="col-lg-4">
+              <aside class="summe">
+                <p class="label">Dein Aufenthalt</p>
+                <ul class="summe-liste">
+                  <li><span>Nächte</span><span id="sum-naechte">–</span></li>
+                  <li><span>CHF / Nacht</span><span id="sum-tarif">–</span></li>
+                  <li><span>Miete</span><span id="sum-miete">–</span></li>
+                  <li><span>Endreinigung</span><span>CHF 450.–</span></li>
+                  <li class="summe-total"><span>Total</span><span id="sum-total">–</span></li>
+                </ul>
+                <p id="sum-bonus" class="summe-bonus">Ab 7 Nächten: ein Abend mit Köchin Lucia.</p>
+                <button id="btn-senden" class="knopf knopf-voll" type="submit">
+                  Anfrage senden <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                </button>
+                <p class="label summe-hinweis">Unverbindlich. Antwort innert 24 Stunden.</p>
+              </aside>
+            </div>
           </div>
-
-          <!-- Zusammenfassung, wird live berechnet -->
-          <div class="col-lg-4">
-            <aside class="booking-summary">
-              <p class="stub-label">Dein Aufenthalt</p>
-              <ul class="summary-list">
-                <li><span>Nächte</span><span id="sum-naechte">–</span></li>
-                <li><span>CHF 118.– × Nächte</span><span id="sum-miete">–</span></li>
-                <li><span>Endreinigung</span><span>CHF 40.–</span></li>
-                <li class="summary-total"><span>Total</span><span id="sum-total">–</span></li>
-              </ul>
-              <p id="sum-bonus" class="summary-bonus">Ab 7 Nächten: eine Platte geschenkt.</p>
-              <button id="btn-senden" class="btn btn-niche w-100 btn-lg" type="submit">
-                <i class="bi bi-envelope-paper-heart" aria-hidden="true"></i> Anfrage senden
-              </button>
-              <p class="summary-note">Unverbindlich. Wir melden uns innert 24 Stunden.</p>
-            </aside>
-          </div>
-        </div>
-      </form>
+        </form>
+      </div>
     </section>
 
   </main>
 
-  <footer class="footer">
-    <div class="container d-flex flex-column flex-md-row justify-content-between gap-2">
-      <span>© 2026 Wohnung 4b · Schulprojekt Modul 293</span>
-      <span class="text-muted-niche">Gebaut mit Bootstrap, jQuery und zu viel Kaffee aus der Bialetti.</span>
+  <footer class="fuss">
+    <p class="fuss-wort" aria-hidden="true">Calce</p>
+    <div class="fuss-zeile">
+      <span class="label">© 2026 Villa Calce · Schulprojekt Modul 293 · fiktives Objekt</span>
+      <span class="label">Podere 9, 53026 Val d'Orcia (SI)</span>
+      <a href="#top" class="label">Nach oben <i class="bi bi-arrow-up" aria-hidden="true"></i></a>
     </div>
-    <div class="container credits">
-      Fotos von Unsplash:
-      <a href="https://unsplash.com/photos/green-wooden-door-with-brass-door-knob-bxJCNO_3rYY" target="_blank" rel="noopener">Tür</a> ·
-      <a href="https://unsplash.com/photos/plant-beside-vinyl-player-nVn6HSRQVVk" target="_blank" rel="noopener">Plattenspieler</a> ·
-      <a href="https://unsplash.com/photos/a-room-with-a-skylight-and-a-white-wall-XANoMMqjmNc" target="_blank" rel="noopener">Dachfenster</a> ·
-      <a href="https://unsplash.com/photos/red-and-silver-coffee-maker-wdF9uixHV-A" target="_blank" rel="noopener">Bialetti</a> ·
-      <a href="https://unsplash.com/photos/a-monstera-plant-sits-in-a-corner-McbXDs7bYNU" target="_blank" rel="noopener">Herbert</a> ·
-      <a href="https://unsplash.com/photos/a-calico-cat-sitting-on-a-window-sill-RkaUK-s43Gc" target="_blank" rel="noopener">Gertrud</a> ·
-      <a href="https://unsplash.com/photos/8muUTAmcWU4" target="_blank" rel="noopener">Leselampe</a> ·
-      <a href="https://unsplash.com/photos/looking-down-a-wooden-spiral-staircase-with-tiled-walls-FazaevhI74Y" target="_blank" rel="noopener">Treppenhaus</a> ·
-      <a href="https://unsplash.com/photos/white-cassette-tape-close-up-photography-mbGxz7pt0jM" target="_blank" rel="noopener">Kassette</a> ·
-      <a href="https://unsplash.com/photos/a-stack-of-old-books-WO6Xj0Le6vY" target="_blank" rel="noopener">Taschenbücher</a> ·
-      <a href="https://unsplash.com/photos/rows-of-vinyl-records-in-plastic-sleeves-n-iS58QUWTA" target="_blank" rel="noopener">Plattenkiste</a> ·
-      <a href="https://unsplash.com/photos/three-hanged-assorted-color-ceramic-mugs-NEc3YEN1FFw" target="_blank" rel="noopener">Tassen</a>
-    </div>
+    <p class="label fuss-credits">
+      Fotos: Unsplash
+      (<a href="https://unsplash.com/photos/a-scenic-view-of-rolling-hills-with-a-house-in-the-distance-Yc2OnbuO2Ck" target="_blank" rel="noopener">Hügel</a>,
+      <a href="https://unsplash.com/photos/infinity-pool-overlooking-misty-mountains-and-valley-lttGHaNdjSI" target="_blank" rel="noopener">Pool</a>,
+      <a href="https://unsplash.com/photos/a-house-with-a-pool-surrounded-by-trees-cCb5SMpxusA" target="_blank" rel="noopener">Garten</a>,
+      <a href="https://unsplash.com/photos/modern-living-room-with-minimalist-decor-and-neutral-tones-xVZYJePklnk" target="_blank" rel="noopener">Salone</a>,
+      <a href="https://unsplash.com/photos/curved-concrete-interior-with-small-figures-rKs1kaHbhF8" target="_blank" rel="noopener">Beton</a>,
+      <a href="https://unsplash.com/photos/PzPbh-faPgU" target="_blank" rel="noopener">Abend</a>,
+      <a href="https://unsplash.com/photos/sL9o10XhShg" target="_blank" rel="noopener">Horizont</a>,
+      <a href="https://unsplash.com/photos/vineyard-rows-on-tuscan-hillside-pnigODapPek" target="_blank" rel="noopener">Reben</a>,
+      <a href="https://unsplash.com/photos/an-olive-tree-with-lots-of-green-leaves-hnkdeJJoY-A" target="_blank" rel="noopener">Olive</a>,
+      <a href="https://unsplash.com/photos/a-black-and-white-photo-of-a-stone-wall-DzNNhA4ckWA" target="_blank" rel="noopener">Kalk</a>)
+      · Karte © OpenStreetMap
+    </p>
   </footer>
-
-  <!-- Vitrine (Lightbox) für das Museum -->
-  <div class="modal fade" id="lightbox" tabindex="-1" aria-labelledby="vitrine-titel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-xl">
-      <div class="modal-content vitrine">
-        <button type="button" class="btn-close btn-close-white vitrine-close" data-bs-dismiss="modal" aria-label="Schliessen"></button>
-        <div class="vitrine-body">
-          <div class="vitrine-bild">
-            <img id="lightbox-img" alt="">
-          </div>
-          <aside class="vitrine-schild">
-            <p class="schild-nr" id="vitrine-nr"></p>
-            <h3 id="vitrine-titel"></h3>
-            <dl class="schild-daten">
-              <dt>Datierung</dt><dd id="vitrine-datierung"></dd>
-              <dt>Material</dt><dd id="vitrine-material"></dd>
-              <dt>Fundort</dt><dd id="vitrine-fundort"></dd>
-            </dl>
-            <p class="schild-notiz" id="vitrine-notiz"></p>
-            <div class="vitrine-nav">
-              <button type="button" class="museum-chip" id="vitrine-zurueck" aria-label="Vorheriges Exponat"><i class="bi bi-arrow-left" aria-hidden="true"></i></button>
-              <span id="vitrine-zaehler"></span>
-              <button type="button" class="museum-chip" id="vitrine-weiter" aria-label="Nächstes Exponat"><i class="bi bi-arrow-right" aria-hidden="true"></i></button>
-            </div>
-          </aside>
-        </div>
-      </div>
-    </div>
-  </div>
 
   <!-- Toast für kleine Rückmeldungen -->
   <div class="toast-container position-fixed bottom-0 end-0 p-3">
-    <div id="toast" class="toast toast-niche" role="status" aria-live="polite" aria-atomic="true">
+    <div id="toast" class="toast toast-brutal" role="status" aria-live="polite" aria-atomic="true">
       <div class="toast-body" id="toast-text"></div>
     </div>
   </div>
@@ -510,6 +457,9 @@
           integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
   <!-- HighCharts 11 (Diagramme) -->
   <script src="https://cdn.jsdelivr.net/npm/highcharts@11.4.8/highcharts.js"></script>
+  <!-- GSAP 3 mit ScrollTrigger (Animationen und Scrolleffekte) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
   <!-- Eigenes Script -->
   <script src="app.js"></script>
 </body>

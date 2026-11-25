@@ -1,134 +1,47 @@
-// Wird ausgeführt, sobald die Seite geladen ist
+// =========================================================
+// Villa Calce · app.js
+// Interaktivität (jQuery), API-Features aus dem Auftrag,
+// Animationen und Scrolleffekte (GSAP + ScrollTrigger)
+// =========================================================
+
 $(function () {
   console.log('jQuery', $.fn.jquery, 'und Bootstrap', bootstrap.Tooltip.VERSION, 'sind geladen');
 
   // Kleine Rückmeldung unten rechts
-  const toast = bootstrap.Toast.getOrCreateInstance($('#toast')[0], { delay: 3000 });
+  const toast = bootstrap.Toast.getOrCreateInstance($('#toast')[0], { delay: 3500 });
   function zeigeToast(text) {
     $('#toast-text').text(text);
     toast.show();
   }
 
-  // Fun Facts über die Wohnung, per Klick durchschalten
-  const funFacts = [
-    'Der Vormieter hat die Wand im Flur „Salbei“ gestrichen. Es ist eher Pistazie.',
-    'Die dritte Treppenstufe von oben knarrt in einem leicht anderen Ton als die anderen.',
-    'Gertrud hat einen eigenen Instagram-Account. Er hat 14 Follower, alle aus dem Haus.',
-    'Im Schrank liegt eine Kassette mit der Aufschrift „Sommer 98“. Niemand weiss, was drauf ist.',
-    'Herbert ist eine Monstera und älter als der Plattenspieler.',
-    'Das Dachfenster zeigt genau nach Westen. Der eine Stern ist vermutlich die Venus.'
-  ];
-  let factIndex = 0;
-
-  $('#btn-funfact').on('click', function () {
-    factIndex = (factIndex + 1) % funFacts.length;
-    $('#funfact-text').fadeOut(150, function () {
-      $(this).text(funFacts[factIndex]).fadeIn(150);
-    });
+  // Mobile Navigation nach Klick auf einen Link wieder schliessen
+  $('#nav .nav-link').on('click', function () {
+    const menu = bootstrap.Collapse.getInstance($('#nav')[0]);
+    if (menu) menu.hide();
   });
 
-  // =========================================================
-  // Galerie: Museum der Kleinigkeiten
-  // Die Exponate stehen als Liste hier im Code. Daraus baut jQuery
-  // die Galerie, die Filter und die Vitrine (Lightbox).
-  // =========================================================
-  const EXPONATE = [
-    { bild: 'tuer.jpg', titel: 'Die grüne Tür', raum: 'Treppenhaus', datierung: 'um 1931, Farbe 2019', material: 'Tanne, Lack „Moosgrün matt“, Messing', notiz: 'Muss beim Schliessen leicht angehoben werden. Wer das vergisst, hört sie bis in den 3. Stock.', format: 'hoch', alt: 'Grüne Haustür mit Messinggriff' },
-    { bild: 'plattenspieler.jpg', titel: 'Plattenspieler, Seite A', raum: 'Wohnzimmer', datierung: 'behauptet 1979', material: 'Kunststoff, Chrom, Optimismus', notiz: 'Spielt alles auf 33⅓. Für 45er braucht es Geduld und einen Finger auf dem Teller.', format: 'breit', alt: 'Retro-Plattenspieler neben einer Zimmerpflanze' },
-    { bild: 'plattenkiste.jpg', titel: '37 Schallplatten', raum: 'Wohnzimmer', datierung: '1962 bis 2004', material: 'Vinyl, Karton, Staub', notiz: 'Elf davon Jazz, den niemand kennt. Keine davon von Ed Sheeran. Das ist Absicht.', format: 'hoch', alt: 'Schallplatten in Plastikhüllen in einer Kiste' },
-    { bild: 'leselampe.jpg', titel: 'Leselampe mit drei Stufen', raum: 'Wohnzimmer', datierung: 'Flohmarkt, Oktober 2017', material: 'Messing, Stoffschirm', notiz: 'Stufe 1: Kerze. Stufe 2: Krimi. Stufe 3: Verhör. Empfohlen wird Stufe 2.', format: 'breit', alt: 'Leuchtende Tischlampe neben alten Büchern' },
-    { bild: 'taschenbuecher.jpg', titel: 'Taschenbücher mit Eselsohren', raum: 'Schlafzimmer', datierung: 'diverse', material: 'Papier, vergilbt', notiz: 'Ca. 60 Stück. Wer eines mitnimmt, lässt eines da. Die Eselsohren zeigen, wo die Vormieter eingeschlafen sind.', format: 'breit', alt: 'Stapel alter Taschenbücher mit vergilbten Seiten' },
-    { bild: 'dachfenster.jpg', titel: 'Dachfenster Richtung Westen', raum: 'Schlafzimmer', datierung: 'Baujahr Haus', material: 'Glas, Himmel', notiz: 'Zeigt genau einen Stern. Vermutlich die Venus. Tagsüber im Urlaub.', format: 'hoch', alt: 'Blick durch ein schmales Dachfenster in den Himmel' },
-    { bild: 'kassette.jpg', titel: 'Kassette „Sommer 98“', raum: 'Schlafzimmer', datierung: 'Sommer 1998 (vermutlich)', material: 'Magnetband, Plastik, Geheimnis', notiz: 'Lag im Schrank. Niemand weiss, was drauf ist. Es gibt kein Gerät, um es herauszufinden. So bleibt es schön.', format: 'breit', alt: 'Weisse Musikkassette mit herausgezogenem Band auf orangem Grund' },
-    { bild: 'bialetti.jpg', titel: 'Die Bialetti', raum: 'Küche', datierung: 'seit Einzug', material: 'Aluminium, rot lackiert', notiz: 'Bitte nicht in den Geschirrspüler. Sie ist empfindlich und merkt sich das.', format: 'breit', alt: 'Rote Bialetti Moka-Kanne auf einem Gasherd' },
-    { bild: 'tassen.jpg', titel: 'Neun Tassen, alle verschieden', raum: 'Küche', datierung: '1994 bis heute', material: 'Keramik, Erinnerungen', notiz: 'Keine Tasse passt zur anderen. Die mit dem Herz ist von einer Reise, an die sich niemand erinnert.', format: 'breit', alt: 'Drei verschiedene Tassen hängen an Haken' },
-    { bild: 'treppenhaus.jpg', titel: '84 Treppenstufen', raum: 'Treppenhaus', datierung: 'um 1931', material: 'Eiche, Fliesen, Muskelkater', notiz: 'Die dritte Stufe von oben knarrt einen halben Ton tiefer als die anderen. Kenner zählen mit.', format: 'breit', alt: 'Blick von oben in ein hölzernes Wendeltreppenhaus' },
-    { bild: 'herbert.jpg', titel: 'Herbert', raum: 'Bewohner', datierung: 'älter als der Plattenspieler', material: 'Monstera deliciosa', notiz: 'Wird am Dienstag gegossen. Nicht am Mittwoch. Herbert merkt das.', format: 'breit', alt: 'Monstera-Pflanze vor einer hellblauen Wand' },
-    { bild: 'gertrud.jpg', titel: 'Gertrud', raum: 'Bewohner', datierung: 'kommt täglich um 18:40', material: 'Katze, dreifarbig', notiz: 'Leihgabe der Nachbarschaft. Nicht füttern. Sie wird so tun, als wüsstest du das nicht.', format: 'breit', alt: 'Dreifarbige Katze döst auf einem Fenstersims' }
-  ];
+  // Die Villa (fiktiv), Val d'Orcia bei Pienza
+  const VILLA_LAT = 43.0590;
+  const VILLA_LON = 11.6370;
 
-  // Inventarnummer aus der Position: 1 -> "4B-001"
-  function inventarNr(index) {
-    return '4B-' + String(index + 1).padStart(3, '0');
+  // Abstand zwischen zwei Koordinaten in km (Haversine-Formel)
+  function distanzKm(lat1, lon1, lat2, lon2) {
+    const R = 6371;
+    const rad = Math.PI / 180;
+    const dLat = (lat2 - lat1) * rad;
+    const dLon = (lon2 - lon1) * rad;
+    const a = Math.sin(dLat / 2) ** 2 +
+              Math.cos(lat1 * rad) * Math.cos(lat2 * rad) * Math.sin(dLon / 2) ** 2;
+    return 2 * R * Math.asin(Math.sqrt(a));
   }
 
-  let sichtbar = [];      // Indizes der aktuell gefilterten Exponate
-  let aktuellPos = 0;     // Position in "sichtbar", die gerade in der Vitrine ist
-  const vitrine = bootstrap.Modal.getOrCreateInstance($('#lightbox')[0]);
-
-  // Galerie für einen Raum (oder "alle") aufbauen
-  function zeigeSammlung(raum) {
-    const $grid = $('#museum-grid').empty();
-    sichtbar = [];
-
-    $.each(EXPONATE, function (i, e) {
-      if (raum !== 'alle' && e.raum !== raum) return;
-      sichtbar.push(i);
-
-      $('<figure>', { class: 'exponat exponat-' + e.format, tabindex: 0, role: 'button', 'data-index': i, 'aria-label': e.titel + ', Exponat öffnen' })
-        .append(
-          $('<div>', { class: 'exponat-rahmen' }).append(
-            $('<img>', { src: 'img/' + e.bild, alt: e.alt, loading: 'lazy' })
-          ),
-          $('<figcaption>', { class: 'exponat-schild' }).append(
-            $('<span>', { class: 'schild-nr', text: inventarNr(i) + ' · ' + e.raum }),
-            $('<strong>', { text: e.titel }),
-            $('<span>', { class: 'schild-material', text: e.material })
-          )
-        )
-        .css('animation-delay', (sichtbar.length * 60) + 'ms')
-        .appendTo($grid);
-    });
-
-    $('.museum-filter .count').text('(' + EXPONATE.length + ')');
+  // Eine Zeile "Label · Wert" für Ergebnisboxen
+  function datenZeile(label, wert) {
+    return $('<div>', { class: 'daten-zeile' }).append(
+      $('<span>', { class: 'daten-label', text: label }),
+      $('<span>', { class: 'daten-wert', text: wert })
+    );
   }
-
-  // Ein Exponat in der Vitrine zeigen
-  function oeffneVitrine(pos) {
-    aktuellPos = (pos + sichtbar.length) % sichtbar.length; // rundherum blättern
-    const i = sichtbar[aktuellPos];
-    const e = EXPONATE[i];
-
-    $('#lightbox-img').attr({ src: 'img/' + e.bild, alt: e.alt });
-    $('#vitrine-nr').text('Inv.-Nr. ' + inventarNr(i) + ' · ' + e.raum);
-    $('#vitrine-titel').text(e.titel);
-    $('#vitrine-datierung').text(e.datierung);
-    $('#vitrine-material').text(e.material);
-    $('#vitrine-fundort').text('Wohnung 4b, ' + e.raum);
-    $('#vitrine-notiz').text('„' + e.notiz + '“');
-    $('#vitrine-zaehler').text('Exponat ' + (aktuellPos + 1) + ' von ' + sichtbar.length);
-    vitrine.show();
-  }
-
-  // Filter-Chips
-  $('.museum-filter').on('click', '.museum-chip[data-raum]', function () {
-    $('.museum-chip[data-raum]').removeClass('is-active');
-    $(this).addClass('is-active');
-    zeigeSammlung($(this).data('raum'));
-  });
-
-  // Zufälliges Exponat aus der aktuellen Auswahl
-  $('#museum-zufall').on('click', function () {
-    oeffneVitrine(Math.floor(Math.random() * sichtbar.length));
-  });
-
-  // Klick oder Enter auf ein Exponat (Event-Delegation, weil die Elemente erst per jQuery entstehen)
-  $('#museum-grid').on('click keydown', '.exponat', function (event) {
-    if (event.type === 'keydown' && event.key !== 'Enter' && event.key !== ' ') return;
-    event.preventDefault();
-    oeffneVitrine(sichtbar.indexOf($(this).data('index')));
-  });
-
-  // Blättern in der Vitrine: Buttons und Pfeiltasten
-  $('#vitrine-zurueck').on('click', function () { oeffneVitrine(aktuellPos - 1); });
-  $('#vitrine-weiter').on('click', function () { oeffneVitrine(aktuellPos + 1); });
-  $(document).on('keydown', function (event) {
-    if (!$('#lightbox').hasClass('show')) return;
-    if (event.key === 'ArrowLeft') oeffneVitrine(aktuellPos - 1);
-    if (event.key === 'ArrowRight') oeffneVitrine(aktuellPos + 1);
-  });
-
-  zeigeSammlung('alle');
 
   // =========================================================
   // a) Zufälliges Katzenbild (The Cat API)
@@ -139,32 +52,22 @@ $(function () {
     const $button = $('#btn-cat');
     const $result = $('#cat-result');
 
-    // Während des Ladens: Button sperren und Status anzeigen
-    $button.prop('disabled', true).text('Katze wird gesucht …');
+    $button.prop('disabled', true);
     $result.removeClass('has-image').text('Lädt …');
 
-    // GET-Request an die API, Antwort ist ein Array mit einem Objekt
+    // Antwort ist ein Array mit einem Objekt: [{ url: "..." }]
     $.getJSON(CAT_API_URL)
       .done(function (data) {
-        const katze = data[0];
-
-        // Neues <img> erstellen und den Platzhalter damit ersetzen
-        const $bild = $('<img>', {
-          src: katze.url,
-          alt: 'Zufällige Katze von The Cat API',
-          class: 'cat-img'
-        });
-
+        const $bild = $('<img>', { src: data[0].url, alt: 'Zufällige Katze von The Cat API', class: 'cat-img' });
         $result.empty().addClass('has-image').append($bild);
       })
       .fail(function () {
-        $result.text('Keine Katze gefunden. Versuch es gleich nochmal.');
+        $result.text('Keine Katze gefunden. Nochmal versuchen.');
       })
       .always(function () {
-        $button.prop('disabled', false).text('Neue Katze');
+        $button.prop('disabled', false).html('Neue Katze <i class="bi bi-arrow-right" aria-hidden="true"></i>');
       });
   }
-
   $('#btn-cat').on('click', ladeKatze);
 
   // =========================================================
@@ -172,45 +75,39 @@ $(function () {
   // =========================================================
   const BTC_API_URL = 'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd,chf';
 
-  // Zahl schön formatieren, z. B. 64522 -> 64'522.–
-  function formatiereBetrag(betrag) {
-    return new Intl.NumberFormat('de-CH', { maximumFractionDigits: 0 }).format(betrag) + '.–';
+  // 64522 -> 64'522
+  function formatiereZahl(zahl) {
+    return new Intl.NumberFormat('de-CH', { maximumFractionDigits: 0 }).format(zahl);
   }
 
   function ladeBitcoinKurs() {
     const $button = $('#btn-btc');
     const $result = $('#btc-result');
 
-    $button.prop('disabled', true).text('Kurs wird geladen …');
-    $result.text('Lädt …');
+    $button.prop('disabled', true);
+    $result.removeClass('has-data').text('Lädt …');
 
-    // Antwort sieht so aus: { "bitcoin": { "usd": 64522, "chf": 54312 } }
+    // Antwort: { "bitcoin": { "usd": 64522, "chf": 54312 } }
     $.getJSON(BTC_API_URL)
       .done(function (data) {
         const usd = data.bitcoin.usd;
         const chf = data.bitcoin.chf;
+        const naechte = (chf / 1450).toFixed(1);
         const zeit = new Date().toLocaleTimeString('de-CH', { hour: '2-digit', minute: '2-digit' });
 
         $result.empty().addClass('has-data').append(
-          $('<div>', { class: 'btc-row' }).append(
-            $('<span>', { class: 'btc-label', text: 'USD' }),
-            $('<span>', { class: 'btc-value', text: formatiereBetrag(usd) })
-          ),
-          $('<div>', { class: 'btc-row' }).append(
-            $('<span>', { class: 'btc-label', text: 'CHF' }),
-            $('<span>', { class: 'btc-value', text: formatiereBetrag(chf) })
-          ),
-          $('<div>', { class: 'btc-time', text: 'Stand ' + zeit + ' Uhr' })
+          datenZeile('USD', formatiereZahl(usd)),
+          datenZeile('CHF', formatiereZahl(chf)),
+          $('<div>', { class: 'daten-fuss', text: '1 BTC = ' + naechte + ' Nächte Nebensaison · Stand ' + zeit + ' Uhr' })
         );
       })
       .fail(function () {
-        $result.text('Kurs gerade nicht abrufbar. Vielleicht ist die API müde.');
+        $result.text('Kurs gerade nicht abrufbar.');
       })
       .always(function () {
-        $button.prop('disabled', false).text('Kurs aktualisieren');
+        $button.prop('disabled', false).html('Kurs aktualisieren <i class="bi bi-arrow-right" aria-hidden="true"></i>');
       });
   }
-
   $('#btn-btc').on('click', ladeBitcoinKurs);
 
   // =========================================================
@@ -229,21 +126,20 @@ $(function () {
     timezone: 'Europe/Zurich'
   });
 
-  // Kleine Empfehlung fürs Dachfenster, je nach Wetter
-  function dachfensterTipp(tmin, regen) {
-    if (regen >= 1) return 'Dachfenster zu. Herbert mag keinen Regen von oben.';
-    if (tmin < 5) return 'Nur kurz lüften, sonst friert der Plattenspieler.';
-    return 'Dachfenster auf. Vielleicht siehst du heute Nacht den Stern.';
+  function wetterTipp(tmax, regen) {
+    if (regen >= 1) return 'Regen in Zürich. Gutes Timing für die Abreise.';
+    if (tmax < 10) return 'Kalt in Zürich. In der Toskana ist es wärmer.';
+    return 'Schön in Zürich. Fahr trotzdem.';
   }
 
   function ladeWetter() {
     const $button = $('#btn-weather');
     const $result = $('#weather-result');
 
-    $button.prop('disabled', true).text('Wetter wird geladen …');
-    $result.text('Lädt …');
+    $button.prop('disabled', true);
+    $result.removeClass('has-data').text('Lädt …');
 
-    // Die Werte stecken in Arrays, ein Eintrag pro Tag: data.daily.temperature_2m_max[0]
+    // Werte stecken in Arrays, ein Eintrag pro Tag: data.daily.temperature_2m_max[0]
     $.getJSON(WETTER_API_URL)
       .done(function (data) {
         const tmax = Math.round(data.daily.temperature_2m_max[0]);
@@ -251,35 +147,26 @@ $(function () {
         const regen = data.daily.precipitation_sum[0];
 
         $result.empty().addClass('has-data').append(
-          $('<div>', { class: 'wx-row' }).append(
-            $('<span>', { class: 'wx-label', text: 'Ort' }),
-            $('<span>', { class: 'wx-value', text: ORT })
-          ),
-          $('<div>', { class: 'wx-row' }).append(
-            $('<span>', { class: 'wx-label', text: 'Heute' }),
-            $('<span>', { class: 'wx-value', text: 'Tmax ' + tmax + '°C · Tmin ' + tmin + '°C' })
-          ),
-          $('<div>', { class: 'wx-row' }).append(
-            $('<span>', { class: 'wx-label', text: 'Niederschlag' }),
-            $('<span>', { class: 'wx-value', text: regen.toFixed(1) + ' mm' })
-          ),
-          $('<div>', { class: 'wx-tipp', text: dachfensterTipp(tmin, regen) })
+          datenZeile('Ort', ORT),
+          datenZeile('Heute', tmax + '° / ' + tmin + '°'),
+          datenZeile('Regen', regen.toFixed(1) + ' mm'),
+          $('<div>', { class: 'daten-tipp', text: wetterTipp(tmax, regen) })
         );
       })
       .fail(function () {
-        $result.text('Wetter gerade nicht abrufbar. Schau einfach aus dem Dachfenster.');
+        $result.text('Wetter gerade nicht abrufbar.');
       })
       .always(function () {
-        $button.prop('disabled', false).text('Wetter aktualisieren');
+        $button.prop('disabled', false).html('Wetter aktualisieren <i class="bi bi-arrow-right" aria-hidden="true"></i>');
       });
   }
-
   $('#btn-weather').on('click', ladeWetter);
 
   // =========================================================
-  // c+) Für die Schnellen: Wetterverlauf 5 Tage mit HighCharts
+  // c+) Wetterverlauf 5 Tage mit HighCharts
+  //     Zürich (Temperatur + Niederschlag) gegen die Villa (Temperatur)
   // =========================================================
-  const VERLAUF_API_URL = 'https://api.open-meteo.com/v1/forecast?' + $.param({
+  const VERLAUF_ZH_URL = 'https://api.open-meteo.com/v1/forecast?' + $.param({
     latitude: LAT,
     longitude: LON,
     hourly: 'temperature_2m,precipitation',
@@ -288,8 +175,14 @@ $(function () {
     models: 'meteoswiss_icon_ch2',
     timezone: 'Europe/Zurich'
   });
+  const VERLAUF_VILLA_URL = 'https://api.open-meteo.com/v1/forecast?' + $.param({
+    latitude: VILLA_LAT,
+    longitude: VILLA_LON,
+    hourly: 'temperature_2m',
+    forecast_days: 5,
+    timezone: 'Europe/Rome'
+  });
 
-  // Deutsche Wochentage und Monate für die Achsenbeschriftung
   Highcharts.setOptions({
     lang: {
       weekdays: ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'],
@@ -300,21 +193,25 @@ $(function () {
     }
   });
 
+  // "2026-11-18T13:00" in Millisekunden. Die Zeiten sind schon Ortszeit,
+  // darum als UTC behandeln (sonst verschiebt sich alles).
+  function zeitpunkt(t) { return Date.parse(t + ':00Z'); }
+
   function ladeWetterVerlauf() {
     const $button = $('#btn-weather-chart');
     const $chart = $('#weather-chart');
+    $button.prop('disabled', true);
 
-    $button.prop('disabled', true).text('Verlauf wird geladen …');
+    // Zwei Anfragen gleichzeitig, weiter wenn beide fertig sind
+    $.when($.getJSON(VERLAUF_ZH_URL), $.getJSON(VERLAUF_VILLA_URL))
+      .done(function (zh, villa) {
+        const z = zh[0].hourly;
+        const v = villa[0].hourly;
+        const tempZh = z.time.map(function (t, i) { return [zeitpunkt(t), z.temperature_2m[i]]; });
+        const regenZh = z.time.map(function (t, i) { return [zeitpunkt(t), z.precipitation[i]]; });
+        const tempVilla = v.time.map(function (t, i) { return [zeitpunkt(t), v.temperature_2m[i]]; });
 
-    $.getJSON(VERLAUF_API_URL)
-      .done(function (data) {
-        // Zeiten ("2026-11-18T13:00") in Millisekunden umwandeln und mit den Werten paaren.
-        // Die Zeiten sind schon Schweizer Ortszeit, darum als UTC behandeln (sonst verschiebt sich alles).
-        const zeiten = data.hourly.time.map(function (t) { return Date.parse(t + ':00Z'); });
-        const temperatur = zeiten.map(function (z, i) { return [z, data.hourly.temperature_2m[i]]; });
-        const regen = zeiten.map(function (z, i) { return [z, data.hourly.precipitation[i]]; });
-
-        $chart.removeClass('placeholder-box placeholder-chart').addClass('chart-live').empty();
+        $chart.addClass('chart-live').empty();
 
         Highcharts.chart('weather-chart', {
           chart: { backgroundColor: 'transparent', style: { fontFamily: 'JetBrains Mono, monospace' } },
@@ -324,19 +221,22 @@ $(function () {
           xAxis: {
             type: 'datetime',
             tickInterval: 24 * 3600 * 1000,
-            labels: { format: '{value:%a %e.}' },
+            labels: { format: '{value:%a %e.}', style: { color: '#ecebe6' } },
+            lineColor: '#ecebe6',
+            tickColor: '#ecebe6',
             gridLineWidth: 1,
-            gridLineColor: '#e6dccb'
+            gridLineColor: 'rgba(236,235,230,.15)'
           },
           yAxis: [
-            { title: { text: 'Temperatur °C' }, labels: { format: '{value}°' } },
-            { title: { text: 'Niederschlag mm' }, opposite: true, min: 0, labels: { format: '{value}' } }
+            { title: { text: '°C', style: { color: '#ecebe6' } }, labels: { format: '{value}°', style: { color: '#ecebe6' } }, gridLineColor: 'rgba(236,235,230,.15)' },
+            { title: { text: 'mm', style: { color: '#ecebe6' } }, opposite: true, min: 0, labels: { style: { color: '#ecebe6' } }, gridLineWidth: 0 }
           ],
-          tooltip: { shared: true, xDateFormat: '%A, %e. %B, %H:%M Uhr' },
-          legend: { itemStyle: { fontWeight: 'normal' } },
+          tooltip: { shared: true, xDateFormat: '%A, %e. %B, %H:%M Uhr', backgroundColor: '#0d0d0c', borderColor: '#ecebe6', style: { color: '#ecebe6' } },
+          legend: { itemStyle: { color: '#ecebe6', fontWeight: 'normal' }, itemHoverStyle: { color: '#c2471d' } },
           series: [
-            { name: 'Niederschlag', type: 'column', yAxis: 1, data: regen, color: '#7fa7c9', tooltip: { valueSuffix: ' mm' }, pointPadding: 0, groupPadding: 0 },
-            { name: 'Temperatur', type: 'spline', data: temperatur, color: '#b5542d', lineWidth: 2, marker: { enabled: false }, tooltip: { valueSuffix: ' °C' } }
+            { name: 'Niederschlag Zürich', type: 'column', yAxis: 1, data: regenZh, color: 'rgba(236,235,230,.35)', borderWidth: 0, pointPadding: 0, groupPadding: 0, tooltip: { valueSuffix: ' mm' } },
+            { name: 'Temperatur Zürich', type: 'line', data: tempZh, color: '#ecebe6', lineWidth: 1.5, marker: { enabled: false }, tooltip: { valueSuffix: ' °C' } },
+            { name: 'Temperatur Villa', type: 'line', data: tempVilla, color: '#c2471d', lineWidth: 2.5, marker: { enabled: false }, tooltip: { valueSuffix: ' °C' } }
           ]
         });
       })
@@ -344,47 +244,34 @@ $(function () {
         $chart.text('Prognose gerade nicht abrufbar.');
       })
       .always(function () {
-        $button.prop('disabled', false).text('Verlauf aktualisieren');
+        $button.prop('disabled', false).html('Verlauf aktualisieren <i class="bi bi-arrow-right" aria-hidden="true"></i>');
       });
   }
-
   $('#btn-weather-chart').on('click', ladeWetterVerlauf);
 
   // =========================================================
-  // d) Die 5 nächstgelegenen Ladestationen (opendata.swiss / BFE)
+  // d) Die 5 nächstgelegenen Ladestationen (BFE / opendata.swiss)
   // =========================================================
   const LADE_API_URL = 'https://data.geo.admin.ch/ch.bfe.ladestellen-elektromobilitaet/data/ch.bfe.ladestellen-elektromobilitaet.json';
   const WINT_LAT = 47.4988; // Winterthur (hardcoded)
   const WINT_LON = 8.7237;
   const ANZAHL = 5;
 
-  // Die Datei ist gross (rund 18'000 Ladepunkte). Wir laden sie nur einmal
-  // und merken uns die aufbereitete Liste für alle weiteren Klicks.
+  // Die Datei ist gross (rund 18'000 Ladepunkte). Nur einmal laden und merken.
   let ladestationen = null;
-
-  // Abstand zwischen zwei Koordinaten in km (Haversine-Formel)
-  function distanzKm(lat1, lon1, lat2, lon2) {
-    const R = 6371; // Erdradius in km
-    const rad = Math.PI / 180;
-    const dLat = (lat2 - lat1) * rad;
-    const dLon = (lon2 - lon1) * rad;
-    const a = Math.sin(dLat / 2) ** 2 +
-              Math.cos(lat1 * rad) * Math.cos(lat2 * rad) * Math.sin(dLon / 2) ** 2;
-    return 2 * R * Math.asin(Math.sqrt(a));
-  }
 
   // Rohdaten in eine einfache Liste umwandeln: ein Eintrag pro Standort
   function bereiteStationenAuf(data) {
     const standorte = {};
 
-    // Aufbau: data.EVSEData = [ Betreiber, ... ], jeder Betreiber hat EVSEDataRecord = [ Ladepunkt, ... ]
+    // Aufbau: data.EVSEData = [ Betreiber ], jeder Betreiber hat EVSEDataRecord = [ Ladepunkt ]
     $.each(data.EVSEData, function (_, betreiber) {
       $.each(betreiber.EVSEDataRecord, function (_, punkt) {
         // Koordinaten stehen als Text "47.43958 9.006634" drin
         const teile = (punkt.GeoCoordinates && punkt.GeoCoordinates.Google || '').split(' ');
         const lat = parseFloat(teile[0]);
         const lon = parseFloat(teile[1]);
-        if (isNaN(lat) || isNaN(lon)) return; // Eintrag ohne Koordinaten überspringen
+        if (isNaN(lat) || isNaN(lon)) return;
 
         // Mehrere Ladepunkte am gleichen Ort zusammenfassen
         const schluessel = lat.toFixed(5) + ',' + lon.toFixed(5);
@@ -421,12 +308,12 @@ $(function () {
     return Object.values(standorte);
   }
 
-  // Liste rendern. Jeder Eintrag merkt sich seine Koordinaten (für die Karte später).
+  // Liste rendern, jeder Eintrag merkt sich seine Koordinaten (für die Karte)
   function zeigeStationen(stationen, mitDistanz) {
-    const $liste = $('#charger-result').empty().addClass('has-data charger-list');
+    const $liste = $('#charger-result').empty().addClass('has-data');
 
     $.each(stationen, function (_, s) {
-      const details = [s.strasse, (s.plz + ' ' + s.ort).trim()].filter(Boolean).join(', ');
+      const adresse = [s.strasse, (s.plz + ' ' + s.ort).trim()].filter(Boolean).join(', ');
       const meta = [
         s.leistung ? s.leistung + ' kW' : null,
         s.anzahl > 1 ? s.anzahl + ' Ladepunkte' : '1 Ladepunkt',
@@ -434,23 +321,20 @@ $(function () {
       ].filter(Boolean).join(' · ');
 
       $('<li>', { 'data-lat': s.lat, 'data-lon': s.lon }).append(
-        $('<div>', { class: 'charger-head' }).append(
-          $('<strong>', { text: s.name }),
-          mitDistanz ? $('<span>', { class: 'charger-km', text: s.distanz.toFixed(1) + ' km' }) : null
+        $('<div>', { class: 'lade-kopf' }).append(
+          $('<span>', { class: 'lade-name', text: s.name }),
+          mitDistanz ? $('<span>', { class: 'lade-km', text: s.distanz.toFixed(1) + ' km' }) : null
         ),
-        $('<div>', { class: 'charger-addr', text: details }),
-        $('<div>', { class: 'charger-meta', text: meta })
+        $('<div>', { class: 'lade-adr', text: adresse }),
+        $('<div>', { class: 'lade-meta', text: meta })
       ).appendTo($liste);
     });
   }
 
   // Daten holen (oder aus dem Speicher nehmen) und dann "weiter" ausführen
   function mitStationen(weiter) {
-    if (ladestationen) {
-      weiter();
-      return;
-    }
-    $('#charger-result').removeClass('has-data charger-list').html('<li>Lade Daten vom Bund … (ca. 1 MB)</li>');
+    if (ladestationen) { weiter(); return; }
+    $('#charger-result').removeClass('has-data').html('<li>Lade Daten vom Bund … (ca. 1 MB)</li>');
 
     $.getJSON(LADE_API_URL)
       .done(function (data) {
@@ -458,27 +342,25 @@ $(function () {
         weiter();
       })
       .fail(function () {
-        $('#charger-result').removeClass('has-data charger-list').html('<li>Daten gerade nicht abrufbar. Versuch es gleich nochmal.</li>');
+        $('#charger-result').removeClass('has-data').html('<li>Daten gerade nicht abrufbar.</li>');
       })
       .always(function () {
-        $('#btn-charger').prop('disabled', false).text('Winterthur suchen');
-        $('#btn-charger-plz').prop('disabled', false);
+        $('#btn-charger, #btn-charger-plz').prop('disabled', false);
       });
   }
 
   // Standard: die 5 nächsten Stationen zu Winterthur
   function sucheBeiWinterthur() {
-    $('#btn-charger').prop('disabled', true).text('Suche läuft …');
-
+    $('#btn-charger').prop('disabled', true);
     mitStationen(function () {
       const naechste = ladestationen
         .map(function (s) { return $.extend({}, s, { distanz: distanzKm(WINT_LAT, WINT_LON, s.lat, s.lon) }); })
         .sort(function (a, b) { return a.distanz - b.distanz; })
         .slice(0, ANZAHL);
 
-      $('#charger-info').text('Die ' + ANZAHL + ' nächsten Stationen ab Winterthur Zentrum');
+      $('#charger-info').text('Die ' + ANZAHL + ' nächsten ab Winterthur Zentrum · Klick zeigt Karte');
       zeigeStationen(naechste, true);
-      $('#btn-charger').prop('disabled', false).text('Winterthur suchen');
+      $('#btn-charger').prop('disabled', false);
     });
   }
 
@@ -491,7 +373,7 @@ $(function () {
     // Never trust user input: nur genau 4 Ziffern zulassen
     if (!/^[0-9]{4}$/.test(plz)) {
       $feld.addClass('is-invalid');
-      $('#charger-info').text('Bitte eine Schweizer PLZ mit 4 Ziffern eingeben.');
+      $('#charger-info').text('Bitte eine Schweizer PLZ mit 4 Ziffern.');
       return;
     }
     $feld.removeClass('is-invalid');
@@ -501,87 +383,94 @@ $(function () {
       const treffer = ladestationen.filter(function (s) { return s.plz === plz; });
 
       if (treffer.length === 0) {
-        $('#charger-info').text('Keine Ladestation mit PLZ ' + plz + ' gefunden.');
-        $('#charger-result').removeClass('has-data charger-list').html('<li>Hier lädt wohl jeder zu Hause.</li>');
+        $('#charger-info').text('Keine Ladestation mit PLZ ' + plz + '.');
+        $('#charger-result').removeClass('has-data').html('<li>Nichts gefunden.</li>');
       } else {
-        // Stärkste Stationen zuerst
         const beste = treffer.sort(function (a, b) { return b.leistung - a.leistung; }).slice(0, ANZAHL);
-        const info = treffer.length === 1
-          ? '1 Standort mit PLZ ' + plz + ':'
-          : treffer.length + ' Standorte mit PLZ ' + plz + ', die ' + beste.length + ' stärksten:';
-        $('#charger-info').text(info);
+        $('#charger-info').text(treffer.length === 1
+          ? '1 Standort mit PLZ ' + plz
+          : treffer.length + ' Standorte mit PLZ ' + plz + ', die ' + beste.length + ' stärksten');
         zeigeStationen(beste, false);
       }
       $('#btn-charger-plz').prop('disabled', false);
     });
   }
 
+  $('#btn-charger').on('click', sucheBeiWinterthur);
+  $('#charger-plz-form').on('submit', sucheNachPlz);
+  $('#charger-plz').on('input', function () { $(this).removeClass('is-invalid'); });
+
   // =========================================================
-  // e) Kartenausschnitt mit Leaflet und swisstopo-Karte
+  // e) Kartenausschnitt mit Leaflet
   // =========================================================
-  const WOHNUNG_LAT = 47.3770; // die grüne Tür, Zürich Kreis 4 (fiktiv)
-  const WOHNUNG_LON = 8.5280;
   const SUCH_API_URL = 'https://api3.geo.admin.ch/rest/services/api/SearchServer';
 
-  let karte = null;   // Leaflet-Karte, wird beim ersten Klick erstellt
-  let marker = null;  // Marker für Ortssuche und Ladestationen
+  let karte = null;
+  let marker = null;
+  let linie = null;
 
-  // Eigenes Marker-Icon in der Türfarbe
-  function markerIcon(farbe) {
+  function pin(farbe) {
     return L.divIcon({
-      className: 'map-pin',
-      html: '<span style="background:' + farbe + '"></span>',
-      iconSize: [22, 22],
-      iconAnchor: [11, 22],
-      popupAnchor: [0, -20]
+      className: '',
+      html: '<div class="karte-pin" style="background:' + farbe + '"></div>',
+      iconSize: [16, 16],
+      iconAnchor: [8, 8],
+      popupAnchor: [0, -10]
     });
   }
 
-  // Karte einmalig erstellen und auf die Wohnung zentrieren
+  // Karte einmalig erstellen und auf die Villa zentrieren
   function erstelleKarte() {
     if (karte) return karte;
+    $('#map').addClass('map-live').empty();
 
-    $('#map').removeClass('placeholder-box placeholder-map').addClass('map-live').empty();
+    karte = L.map('map', { scrollWheelZoom: false }).setView([VILLA_LAT, VILLA_LON], 12);
 
-    karte = L.map('map').setView([WOHNUNG_LAT, WOHNUNG_LON], 16);
-
-    // Kartenkacheln von swisstopo (geo.admin.ch), frei nutzbar mit Quellenangabe
-    L.tileLayer('https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.pixelkarte-farbe/default/current/3857/{z}/{x}/{y}.jpeg', {
-      maxZoom: 18,
-      attribution: '© <a href="https://www.swisstopo.admin.ch" target="_blank" rel="noopener">swisstopo</a>'
+    // Kacheln von OpenStreetMap (swisstopo deckt die Toskana nicht ab).
+    // Per CSS-Filter grau gemacht, damit sie zum Design passen.
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      className: 'karte-kacheln',
+      attribution: '© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>'
     }).addTo(karte);
 
-    L.marker([WOHNUNG_LAT, WOHNUNG_LON], { icon: markerIcon('#2f5d46') })
+    L.marker([VILLA_LAT, VILLA_LON], { icon: pin('#c2471d') })
       .addTo(karte)
-      .bindPopup('<strong>Wohnung 4b</strong><br>Grüne Tür, leicht anheben.')
+      .bindPopup('VILLA CALCE<br>Val d\'Orcia')
       .openPopup();
 
     return karte;
   }
 
-  // Karte auf einen Punkt zentrieren und dort einen Marker setzen
-  function zeigeAufKarte(lat, lon, titel, zoom) {
+  // Marker setzen, optional mit Linie zur Villa
+  function zeigeAufKarte(lat, lon, titel, mitLinie) {
     erstelleKarte();
     if (marker) karte.removeLayer(marker);
+    if (linie) { karte.removeLayer(linie); linie = null; }
 
-    marker = L.marker([lat, lon], { icon: markerIcon('#b5542d') })
+    marker = L.marker([lat, lon], { icon: pin('#0d0d0c') })
       .addTo(karte)
-      .bindPopup($('<div>').text(titel).html()) // Text sicher escapen
+      .bindPopup($('<div>').text(titel).html())   // Text sicher escapen
       .openPopup();
 
-    karte.setView([lat, lon], zoom || 15);
+    if (mitLinie) {
+      linie = L.polyline([[lat, lon], [VILLA_LAT, VILLA_LON]], { color: '#c2471d', weight: 2, dashArray: '6 6' }).addTo(karte);
+      karte.fitBounds(linie.getBounds(), { padding: [30, 30] });
+    } else {
+      karte.setView([lat, lon], 16);
+    }
   }
 
-  // Button: Karte zeigen bzw. zurück zur Wohnung
   $('#btn-map').on('click', function () {
     erstelleKarte();
     if (marker) { karte.removeLayer(marker); marker = null; }
-    karte.setView([WOHNUNG_LAT, WOHNUNG_LON], 16);
-    $('#map-info').text('Die grüne Tür liegt genau in der Mitte.');
-    $(this).text('Zurück zur Wohnung');
+    if (linie) { karte.removeLayer(linie); linie = null; }
+    karte.setView([VILLA_LAT, VILLA_LON], 12);
+    $('#map-info').text('Villa Calce, Val d\'Orcia');
+    $(this).html('Zurück zur Villa <i class="bi bi-arrow-right" aria-hidden="true"></i>');
   });
 
-  // Für die Schnellen: Ort suchen über die Such-API von geo.admin.ch
+  // Für die Schnellen: Abfahrtsort suchen (Such-API von geo.admin.ch, nur Schweiz)
   $('#map-search-form').on('submit', function (event) {
     event.preventDefault();
     const $feld = $('#map-search');
@@ -589,7 +478,7 @@ $(function () {
 
     if (suchtext.length < 2) {
       $feld.addClass('is-invalid');
-      $('#map-info').text('Bitte mindestens 2 Zeichen eingeben.');
+      $('#map-info').text('Bitte mindestens 2 Zeichen.');
       return;
     }
     $feld.removeClass('is-invalid');
@@ -599,17 +488,17 @@ $(function () {
     $.getJSON(SUCH_API_URL, { searchText: suchtext, type: 'locations', sr: 4326, limit: 1 })
       .done(function (data) {
         if (!data.results || data.results.length === 0) {
-          $('#map-info').text('Keinen Ort „' + suchtext + '“ gefunden.');
+          $('#map-info').text('Kein Ort „' + suchtext + '“ in der Schweiz gefunden.');
           return;
         }
         const ort = data.results[0].attrs;
-        // Das Label enthält HTML-Tags wie <b>, die entfernen wir
-        const name = ort.label.replace(/<[^>]*>/g, '');
-        zeigeAufKarte(ort.lat, ort.lon, name, 13);
-        $('#map-info').text('Gefunden: ' + name);
+        const name = ort.label.replace(/<[^>]*>/g, ''); // HTML-Tags aus dem Label entfernen
+        const km = Math.round(distanzKm(ort.lat, ort.lon, VILLA_LAT, VILLA_LON));
+        zeigeAufKarte(ort.lat, ort.lon, name, true);
+        $('#map-info').text(name + ' → Villa Calce · Luftlinie ' + km + ' km');
       })
       .fail(function () {
-        $('#map-info').text('Suche gerade nicht möglich. Versuch es gleich nochmal.');
+        $('#map-info').text('Suche gerade nicht möglich.');
       })
       .always(function () {
         $('#btn-map-search').prop('disabled', false);
@@ -617,119 +506,124 @@ $(function () {
   });
   $('#map-search').on('input', function () { $(this).removeClass('is-invalid'); });
 
-  // Advanced: Klick auf eine Ladestation zeigt sie auf der Karte
+  // Advanced: Klick auf eine Ladestation zeigt sie auf der Karte (Event-Delegation)
   $('#charger-result').on('click', 'li[data-lat]', function () {
     const $eintrag = $(this);
-    const name = $eintrag.find('strong').text();
-
-    zeigeAufKarte(parseFloat($eintrag.data('lat')), parseFloat($eintrag.data('lon')), 'Ladestation: ' + name, 17);
+    const name = $eintrag.find('.lade-name').text();
+    zeigeAufKarte(parseFloat($eintrag.data('lat')), parseFloat($eintrag.data('lon')), 'Ladestation: ' + name, false);
     $('#map-info').text('Ladestation: ' + name);
     $('#charger-result li').removeClass('is-active');
     $eintrag.addClass('is-active');
-
-    // Auf kleinen Bildschirmen zur Karte scrollen
     document.getElementById('map').scrollIntoView({ behavior: 'smooth', block: 'center' });
   });
 
-  $('#btn-charger').on('click', sucheBeiWinterthur);
-  $('#charger-plz-form').on('submit', sucheNachPlz);
-  $('#charger-plz').on('input', function () { $(this).removeClass('is-invalid'); });
+  // =========================================================
+  // Räume: Vorschaubild folgt der Maus (nur Desktop)
+  // =========================================================
+  const $vorschau = $('.raum-vorschau');
+  $('.raum-liste li')
+    .on('mouseenter', function () {
+      $vorschau.find('img').attr('src', $(this).data('bild'));
+      $vorschau.addClass('aktiv');
+    })
+    .on('mouseleave', function () { $vorschau.removeClass('aktiv'); });
+  $('.raum-liste').on('mousemove', function (e) {
+    $vorschau.css({ left: e.clientX + 'px', top: e.clientY + 'px' });
+  });
 
   // =========================================================
   // Buchungsformular
   // =========================================================
-  const PREIS_NACHT = 118;
-  const REINIGUNG = 40;
-  const MIN_NAECHTE = 2;
-  // Endpoint von webhook.site: nimmt die Anfragen entgegen, ansehen unter
-  // https://webhook.site/#!/view/1ccb6196-80fd-4fcd-a8b6-7711bb7755d7
-  // Leer lassen = nichts senden, Daten nur in der Konsole zeigen.
+  const MIN_NAECHTE = 3;
+  const REINIGUNG = 450;
+  // Endpoint von webhook.site (CORS-Header aktiviert). Leer = nichts senden, nur Konsole.
   const WEBHOOK_URL = 'https://webhook.site/1ccb6196-80fd-4fcd-a8b6-7711bb7755d7';
+
+  // Saisonpreis für eine Nacht, abhängig vom Monat (0 = Januar)
+  function tarif(monat) {
+    if (monat >= 5 && monat <= 8) return 2400;           // Juni bis September
+    if (monat === 3 || monat === 4 || monat === 9) return 1850; // April, Mai, Oktober
+    return 1450;                                          // November bis März
+  }
 
   const $form = $('#anfrage');
   const $anreise = $('#anreise');
   const $abreise = $('#abreise');
 
-  // Datum als "YYYY-MM-DD" (Format von <input type="date">)
-  function isoDatum(datum) {
-    return datum.toISOString().slice(0, 10);
-  }
+  function isoDatum(datum) { return datum.toISOString().slice(0, 10); }
   function plusTage(iso, tage) {
     const d = new Date(iso + 'T00:00:00Z');
     d.setUTCDate(d.getUTCDate() + tage);
     return isoDatum(d);
   }
-  function naechteZwischen(von, bis) {
-    if (!von || !bis) return 0;
-    return Math.round((Date.parse(bis) - Date.parse(von)) / 86400000);
-  }
-  function chf(betrag) {
-    return 'CHF ' + new Intl.NumberFormat('de-CH').format(betrag) + '.–';
+  function chf(betrag) { return 'CHF ' + formatiereZahl(betrag) + '.–'; }
+
+  // Miete Nacht für Nacht zusammenzählen (eine Buchung kann über zwei Saisons gehen)
+  function berechne(von, bis) {
+    let naechte = 0;
+    let miete = 0;
+    const d = new Date(von + 'T00:00:00Z');
+    const ende = new Date(bis + 'T00:00:00Z');
+    while (d < ende && naechte < 365) {
+      miete += tarif(d.getUTCMonth());
+      naechte += 1;
+      d.setUTCDate(d.getUTCDate() + 1);
+    }
+    return { naechte: naechte, miete: miete };
   }
 
-  // Frühestes Anreisedatum ist heute, Abreise mindestens 2 Nächte später
   const heute = isoDatum(new Date());
   $anreise.attr('min', heute);
   $abreise.attr('min', plusTage(heute, MIN_NAECHTE));
 
-  // Zusammenfassung und Datumsprüfung bei jeder Änderung aktualisieren
   function aktualisiereBuchung() {
     const von = $anreise.val();
     const bis = $abreise.val();
     if (von) $abreise.attr('min', plusTage(von, MIN_NAECHTE));
 
-    const naechte = naechteZwischen(von, bis);
+    const r = (von && bis) ? berechne(von, bis) : { naechte: 0, miete: 0 };
 
-    // Eigene Regel: mindestens 2 Nächte. setCustomValidity macht das Feld ungültig.
-    if (von && bis && naechte < MIN_NAECHTE) {
-      $abreise[0].setCustomValidity('mindestens 2 Nächte');
-    } else {
-      $abreise[0].setCustomValidity('');
-    }
+    // Eigene Regel: mindestens 3 Nächte
+    $abreise[0].setCustomValidity(von && bis && r.naechte < MIN_NAECHTE ? 'mindestens 3 Nächte' : '');
 
-    if (naechte >= MIN_NAECHTE) {
-      $('#sum-naechte').text(naechte);
-      $('#sum-miete').text(chf(naechte * PREIS_NACHT));
-      $('#sum-total').text(chf(naechte * PREIS_NACHT + REINIGUNG));
+    if (r.naechte >= MIN_NAECHTE) {
+      $('#sum-naechte').text(r.naechte);
+      $('#sum-tarif').text('Ø ' + formatiereZahl(Math.round(r.miete / r.naechte)));
+      $('#sum-miete').text(chf(r.miete));
+      $('#sum-total').text(chf(r.miete + REINIGUNG));
       $('#sum-bonus')
-        .toggleClass('is-earned', naechte >= 7)
-        .text(naechte >= 7 ? 'Bonus: Du darfst dir eine Platte aussuchen.' : 'Noch ' + (7 - naechte) + ' Nächte bis zur Gratis-Platte.');
+        .toggleClass('is-earned', r.naechte >= 7)
+        .text(r.naechte >= 7 ? 'Inklusive: ein Abend mit Köchin Lucia.' : 'Noch ' + (7 - r.naechte) + ' Nächte bis zum Abend mit Köchin Lucia.');
     } else {
-      $('#sum-naechte, #sum-miete, #sum-total').text('–');
-      $('#sum-bonus').removeClass('is-earned').text('Ab 7 Nächten: eine Platte geschenkt.');
+      $('#sum-naechte, #sum-tarif, #sum-miete, #sum-total').text('–');
+      $('#sum-bonus').removeClass('is-earned').text('Ab 7 Nächten: ein Abend mit Köchin Lucia.');
     }
+    return r;
   }
   $anreise.add($abreise).on('change input', aktualisiereBuchung);
 
-  // Zeichen zählen im Nachrichtenfeld
-  $('#nachricht').on('input', function () {
-    $('#nachricht-zaehler').text($(this).val().length);
-  });
+  $('#nachricht').on('input', function () { $('#nachricht-zaehler').text($(this).val().length); });
 
-  // Absenden: erst prüfen (Bootstrap-Validierung), dann senden oder anzeigen
   $form.on('submit', function (event) {
     event.preventDefault();
-    aktualisiereBuchung();
+    const r = aktualisiereBuchung();
 
     if (!this.checkValidity()) {
       $form.addClass('was-validated');
-      // Zum ersten Fehler springen
-      const $erster = $form.find('input:invalid, select:invalid, textarea:invalid').first();
-      $erster.trigger('focus');
-      zeigeToast('Fast. Ein paar Felder brauchen noch Liebe.');
+      $form.find('input:invalid, select:invalid, textarea:invalid').first().trigger('focus');
+      zeigeToast('Ein paar Felder fehlen noch.');
       return;
     }
 
-    // Formulardaten als Objekt sammeln
     const daten = {};
     $.each($form.serializeArray(), function (_, feld) { daten[feld.name] = feld.value.trim(); });
-    daten.naechte = naechteZwischen(daten.anreise, daten.abreise);
-    daten.total_chf = daten.naechte * PREIS_NACHT + REINIGUNG;
+    daten.naechte = r.naechte;
+    daten.total_chf = r.miete + REINIGUNG;
 
     const $button = $('#btn-senden').prop('disabled', true);
 
     function fertig() {
-      zeigeToast('Danke, ' + daten.vorname + '! Wir melden uns per ' + daten.kontaktart + '.');
+      zeigeToast('Grazie, ' + daten.vorname + '. Antwort per ' + daten.kontaktart + ' innert 24 Stunden.');
       $form[0].reset();
       $form.removeClass('was-validated');
       $('#nachricht-zaehler').text(0);
@@ -738,8 +632,7 @@ $(function () {
     }
 
     if (!WEBHOOK_URL) {
-      // Noch kein Backend: Daten nur in der Konsole zeigen
-      console.log('Buchungsanfrage (noch nicht gesendet):', daten);
+      console.log('Buchungsanfrage (nicht gesendet):', daten);
       fertig();
       return;
     }
@@ -748,8 +641,142 @@ $(function () {
     $.post(WEBHOOK_URL, daten)
       .done(fertig)
       .fail(function () {
-        zeigeToast('Senden hat nicht geklappt. Versuch es gleich nochmal.');
+        zeigeToast('Senden hat nicht geklappt. Bitte nochmal versuchen.');
         $button.prop('disabled', false);
       });
   });
+
+  // =========================================================
+  // Animationen und Scrolleffekte (GSAP + ScrollTrigger)
+  // =========================================================
+  const wenigBewegung = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Manifest in einzelne Wörter zerlegen (für den Scroll-Effekt)
+  $('[data-split]').each(function () {
+    const woerter = $(this).text().trim().split(/\s+/);
+    $(this).html(woerter.map(function (w) { return '<span class="w">' + w + '</span>'; }).join(' '));
+  });
+
+  // Zähler: Zahl von 0 hochzählen
+  function zaehleHoch(el) {
+    const ziel = parseInt(el.dataset.count, 10);
+    if (wenigBewegung || typeof gsap === 'undefined') { el.textContent = ziel; return; }
+    const obj = { wert: 0 };
+    gsap.to(obj, {
+      wert: ziel,
+      duration: ziel > 100 ? 1.8 : 1.2,
+      ease: 'power2.out',
+      onUpdate: function () { el.textContent = Math.round(obj.wert); }
+    });
+  }
+
+  if (wenigBewegung || typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
+    // Ohne Animationen: alles sofort sichtbar
+    $('.manifest .w').css('opacity', 1);
+    $('[data-count]').each(function () { this.textContent = this.dataset.count; });
+    return;
+  }
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Fortschrittsbalken oben
+  gsap.to('.progress-line span', {
+    scaleX: 1,
+    ease: 'none',
+    scrollTrigger: { trigger: document.body, start: 'top top', end: 'bottom bottom', scrub: 0.3 }
+  });
+
+  // Hero: Buchstaben steigen auf, Bild bewegt sich langsamer (Parallax)
+  gsap.from('.hero-titel .wort', { yPercent: 110, duration: 1.2, ease: 'power4.out', stagger: 0.12, delay: 0.1 });
+  gsap.from('.hero-label, .hero-meta', { opacity: 0, y: 20, duration: 1, ease: 'power3.out', delay: 0.6, stagger: 0.1 });
+  gsap.from('.hero-bild img', { scale: 1.15, duration: 2, ease: 'power3.out' });
+  gsap.to('.hero-bild', {
+    yPercent: 18,
+    ease: 'none',
+    scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true }
+  });
+  gsap.to('.hero-titel', {
+    yPercent: -25,
+    opacity: 0.2,
+    ease: 'none',
+    scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true }
+  });
+
+  // Manifest: Wörter werden beim Scrollen nacheinander dunkel
+  gsap.to('.manifest .w', {
+    opacity: 1,
+    stagger: 0.05,
+    ease: 'none',
+    scrollTrigger: { trigger: '.manifest', start: 'top 80%', end: 'bottom 45%', scrub: true }
+  });
+
+  // Bilder: werden von unten aufgedeckt und bewegen sich leicht (Parallax)
+  gsap.utils.toArray('[data-reveal]').forEach(function (fig) {
+    gsap.from(fig, {
+      clipPath: 'inset(100% 0 0 0)',
+      duration: 1.3,
+      ease: 'power4.inOut',
+      scrollTrigger: { trigger: fig, start: 'top 85%' }
+    });
+  });
+  gsap.utils.toArray('[data-parallax]').forEach(function (img) {
+    gsap.to(img, {
+      yPercent: 10,
+      ease: 'none',
+      scrollTrigger: { trigger: img.parentElement, start: 'top bottom', end: 'bottom top', scrub: true }
+    });
+  });
+
+  // Grosse Titel gleiten hoch
+  gsap.utils.toArray('.titel-gross').forEach(function (t) {
+    gsap.from(t, { y: 60, opacity: 0, duration: 1, ease: 'power3.out', scrollTrigger: { trigger: t, start: 'top 88%' } });
+  });
+
+  // Zahlen zählen hoch, sobald sie sichtbar sind
+  gsap.utils.toArray('[data-count]').forEach(function (el) {
+    ScrollTrigger.create({ trigger: el, start: 'top 90%', once: true, onEnter: function () { zaehleHoch(el); } });
+  });
+
+  // Räume und Kacheln erscheinen gestaffelt
+  gsap.from('.raum-liste li', {
+    y: 40, opacity: 0, duration: 0.8, ease: 'power3.out', stagger: 0.08,
+    scrollTrigger: { trigger: '.raum-liste', start: 'top 80%' }
+  });
+  gsap.from('.kachel', {
+    y: 50, opacity: 0, duration: 0.8, ease: 'power3.out', stagger: 0.08,
+    scrollTrigger: { trigger: '.service-raster', start: 'top 80%' }
+  });
+  gsap.from('.preis-tabelle tbody tr', {
+    x: -40, opacity: 0, duration: 0.7, ease: 'power3.out', stagger: 0.1,
+    scrollTrigger: { trigger: '.preis-tabelle', start: 'top 85%' }
+  });
+
+  // Galerie: auf grossen Bildschirmen festhalten und seitwärts scrollen
+  ScrollTrigger.matchMedia({
+    '(min-width: 992px)': function () {
+      const spur = document.querySelector('.galerie-spur');
+      const weg = function () { return spur.scrollWidth - window.innerWidth; };
+      gsap.to(spur, {
+        x: function () { return -weg(); },
+        ease: 'none',
+        scrollTrigger: {
+          trigger: '.galerie',
+          start: 'top top',
+          end: function () { return '+=' + weg(); },
+          pin: true,
+          scrub: 0.6,
+          invalidateOnRefresh: true
+        }
+      });
+    }
+  });
+
+  // Footer-Wort fährt herein
+  gsap.from('.fuss-wort', {
+    yPercent: 40, opacity: 0, ease: 'power3.out', duration: 1.2,
+    scrollTrigger: { trigger: '.fuss', start: 'top 85%' }
+  });
+
+  // Bilder laden später nach (loading=lazy): Positionen danach neu berechnen
+  $(window).on('load', function () { ScrollTrigger.refresh(); });
 });
