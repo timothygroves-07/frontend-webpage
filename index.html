@@ -86,30 +86,32 @@
             <p class="label">01 / Haus</p>
           </div>
           <div class="col-lg-9">
+            <h2 class="visually-hidden">Das Haus</h2>
             <p class="manifest" data-split>
               Ein Bauernhaus von 1891, bis auf die Mauern zurückgebaut und mit Kalk neu verputzt. Keine Vorhänge, keine Bilder, keine Dekoration. Nur dicke Wände, kühle Böden und Fenster, die genau dorthin zeigen, wo die Hügel am schönsten sind.
             </p>
           </div>
         </div>
         <div class="row g-0 haus-bilder">
-          <div class="col-md-7 bild-block">
-            <figure class="bild-maske" data-reveal>
+          <figure class="col-md-7 bild-block">
+            <div class="bild-maske" data-reveal>
               <img src="img/villa/pool.jpg" alt="Schmaler Infinity-Pool, der in eine neblige Hügellandschaft übergeht" loading="lazy" width="931" height="1400" data-parallax>
-            </figure>
+            </div>
             <figcaption class="label bild-text">Fig. 01 · Pool, 18 × 3 m, Wasser 27 °C</figcaption>
-          </div>
-          <div class="col-md-5 bild-block versetzt">
-            <figure class="bild-maske" data-reveal>
+          </figure>
+          <figure class="col-md-5 bild-block versetzt">
+            <div class="bild-maske" data-reveal>
               <img src="img/villa/beton.jpg" alt="Geschwungene Wände aus hellem Sichtbeton" loading="lazy" width="933" height="1400" data-parallax>
-            </figure>
+            </div>
             <figcaption class="label bild-text">Fig. 02 · Treppenkern, Kalkputz auf Beton</figcaption>
-          </div>
+          </figure>
         </div>
       </div>
     </section>
 
     <!-- Zahlen -->
-    <section class="zahlen" aria-label="Die Villa in Zahlen">
+    <section class="zahlen" aria-labelledby="zahlen-titel">
+      <h2 id="zahlen-titel" class="visually-hidden">Die Villa in Zahlen</h2>
       <div class="zahl"><span class="zahl-wert" data-count="420">0</span><span class="zahl-einheit">m²</span><span class="label">Wohnfläche</span></div>
       <div class="zahl"><span class="zahl-wert" data-count="6">0</span><span class="zahl-einheit">Suiten</span><span class="label">je mit Bad</span></div>
       <div class="zahl"><span class="zahl-wert" data-count="18">0</span><span class="zahl-einheit">m</span><span class="label">Pool</span></div>
@@ -162,6 +164,7 @@
         <div class="row g-0">
           <div class="col-lg-3 spalte-label"><p class="label">03 / Räume</p></div>
           <div class="col-lg-9">
+            <h2 class="visually-hidden">Räume</h2>
             <ul class="raum-liste">
               <li data-bild="img/villa/wohnen.jpg"><span class="raum-nr">01</span><span class="raum-name">Salone</span><span class="raum-info">86 m² · Kamin · Plattenspieler</span></li>
               <li data-bild="img/villa/beton.jpg"><span class="raum-nr">02</span><span class="raum-name">Cucina</span><span class="raum-info">Kochinsel aus Travertin · 6 Feuer</span></li>
@@ -314,7 +317,7 @@
                   </div>
                   <div class="col-sm-6">
                     <label for="gaeste" class="form-label label">Gäste</label>
-                    <select id="gaeste" name="gaeste" class="form-select feld" required>
+                    <select id="gaeste" name="gaeste" class="form-select feld">
                       <option value="2">2 Gäste</option>
                       <option value="4">4 Gäste</option>
                       <option value="6" selected>6 Gäste</option>
