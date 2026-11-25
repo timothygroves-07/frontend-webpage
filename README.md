@@ -11,6 +11,7 @@ Frontend-Projekt aus Modul 293: eine statische Website zur Vermietung einer (fik
 - `app.js`: Interaktivität, API-Features (jQuery) und Animationen (GSAP)
 - `img/villa/`: Fotos von Unsplash
 - `docs/wireframe.drawio`: Wireframe (draw.io, noch aus der ersten Version)
+- `docs/validierung-und-tests.md`: W3C- und PageSpeed-Resultate mit Analyse
 
 ## Technik
 
@@ -54,5 +55,5 @@ Die Seite läuft über GitHub Pages (Branch `main`, Root). Jeder Push auf `main`
 ## Noch offen
 
 - Button für die Google-Bildersuche (GET-Übung)
-- Validieren (W3C) und Testen (PageSpeed Insights)
+- Erkenntnisse aus PageSpeed umsetzen (siehe `docs/validierung-und-tests.md`)
 - Wireframe an das neue Design anpassen
