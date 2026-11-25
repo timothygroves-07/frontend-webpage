@@ -27,18 +27,108 @@ $(function () {
     });
   });
 
-  // Galerie: Klick auf ein Foto öffnet die Lightbox
-  const lightbox = bootstrap.Modal.getOrCreateInstance($('#lightbox')[0]);
-  $('.gallery-item')
-    .attr({ tabindex: 0, role: 'button' })
-    .on('click keydown', function (e) {
-      if (e.type === 'keydown' && e.key !== 'Enter' && e.key !== ' ') return;
-      e.preventDefault();
-      const $img = $(this).find('img');
-      $('#lightbox-img').attr({ src: $img.attr('src'), alt: $img.attr('alt') });
-      $('#lightbox-caption').text($(this).data('caption'));
-      lightbox.show();
+  // =========================================================
+  // Galerie: Museum der Kleinigkeiten
+  // Die Exponate stehen als Liste hier im Code. Daraus baut jQuery
+  // die Galerie, die Filter und die Vitrine (Lightbox).
+  // =========================================================
+  const EXPONATE = [
+    { bild: 'tuer.jpg', titel: 'Die grüne Tür', raum: 'Treppenhaus', datierung: 'um 1931, Farbe 2019', material: 'Tanne, Lack „Moosgrün matt“, Messing', notiz: 'Muss beim Schliessen leicht angehoben werden. Wer das vergisst, hört sie bis in den 3. Stock.', format: 'hoch', alt: 'Grüne Haustür mit Messinggriff' },
+    { bild: 'plattenspieler.jpg', titel: 'Plattenspieler, Seite A', raum: 'Wohnzimmer', datierung: 'behauptet 1979', material: 'Kunststoff, Chrom, Optimismus', notiz: 'Spielt alles auf 33⅓. Für 45er braucht es Geduld und einen Finger auf dem Teller.', format: 'breit', alt: 'Retro-Plattenspieler neben einer Zimmerpflanze' },
+    { bild: 'plattenkiste.jpg', titel: '37 Schallplatten', raum: 'Wohnzimmer', datierung: '1962 bis 2004', material: 'Vinyl, Karton, Staub', notiz: 'Elf davon Jazz, den niemand kennt. Keine davon von Ed Sheeran. Das ist Absicht.', format: 'hoch', alt: 'Schallplatten in Plastikhüllen in einer Kiste' },
+    { bild: 'leselampe.jpg', titel: 'Leselampe mit drei Stufen', raum: 'Wohnzimmer', datierung: 'Flohmarkt, Oktober 2017', material: 'Messing, Stoffschirm', notiz: 'Stufe 1: Kerze. Stufe 2: Krimi. Stufe 3: Verhör. Empfohlen wird Stufe 2.', format: 'breit', alt: 'Leuchtende Tischlampe neben alten Büchern' },
+    { bild: 'taschenbuecher.jpg', titel: 'Taschenbücher mit Eselsohren', raum: 'Schlafzimmer', datierung: 'diverse', material: 'Papier, vergilbt', notiz: 'Ca. 60 Stück. Wer eines mitnimmt, lässt eines da. Die Eselsohren zeigen, wo die Vormieter eingeschlafen sind.', format: 'breit', alt: 'Stapel alter Taschenbücher mit vergilbten Seiten' },
+    { bild: 'dachfenster.jpg', titel: 'Dachfenster Richtung Westen', raum: 'Schlafzimmer', datierung: 'Baujahr Haus', material: 'Glas, Himmel', notiz: 'Zeigt genau einen Stern. Vermutlich die Venus. Tagsüber im Urlaub.', format: 'hoch', alt: 'Blick durch ein schmales Dachfenster in den Himmel' },
+    { bild: 'kassette.jpg', titel: 'Kassette „Sommer 98“', raum: 'Schlafzimmer', datierung: 'Sommer 1998 (vermutlich)', material: 'Magnetband, Plastik, Geheimnis', notiz: 'Lag im Schrank. Niemand weiss, was drauf ist. Es gibt kein Gerät, um es herauszufinden. So bleibt es schön.', format: 'breit', alt: 'Weisse Musikkassette mit herausgezogenem Band auf orangem Grund' },
+    { bild: 'bialetti.jpg', titel: 'Die Bialetti', raum: 'Küche', datierung: 'seit Einzug', material: 'Aluminium, rot lackiert', notiz: 'Bitte nicht in den Geschirrspüler. Sie ist empfindlich und merkt sich das.', format: 'breit', alt: 'Rote Bialetti Moka-Kanne auf einem Gasherd' },
+    { bild: 'tassen.jpg', titel: 'Neun Tassen, alle verschieden', raum: 'Küche', datierung: '1994 bis heute', material: 'Keramik, Erinnerungen', notiz: 'Keine Tasse passt zur anderen. Die mit dem Herz ist von einer Reise, an die sich niemand erinnert.', format: 'breit', alt: 'Drei verschiedene Tassen hängen an Haken' },
+    { bild: 'treppenhaus.jpg', titel: '84 Treppenstufen', raum: 'Treppenhaus', datierung: 'um 1931', material: 'Eiche, Fliesen, Muskelkater', notiz: 'Die dritte Stufe von oben knarrt einen halben Ton tiefer als die anderen. Kenner zählen mit.', format: 'breit', alt: 'Blick von oben in ein hölzernes Wendeltreppenhaus' },
+    { bild: 'herbert.jpg', titel: 'Herbert', raum: 'Bewohner', datierung: 'älter als der Plattenspieler', material: 'Monstera deliciosa', notiz: 'Wird am Dienstag gegossen. Nicht am Mittwoch. Herbert merkt das.', format: 'breit', alt: 'Monstera-Pflanze vor einer hellblauen Wand' },
+    { bild: 'gertrud.jpg', titel: 'Gertrud', raum: 'Bewohner', datierung: 'kommt täglich um 18:40', material: 'Katze, dreifarbig', notiz: 'Leihgabe der Nachbarschaft. Nicht füttern. Sie wird so tun, als wüsstest du das nicht.', format: 'breit', alt: 'Dreifarbige Katze döst auf einem Fenstersims' }
+  ];
+
+  // Inventarnummer aus der Position: 1 -> "4B-001"
+  function inventarNr(index) {
+    return '4B-' + String(index + 1).padStart(3, '0');
+  }
+
+  let sichtbar = [];      // Indizes der aktuell gefilterten Exponate
+  let aktuellPos = 0;     // Position in "sichtbar", die gerade in der Vitrine ist
+  const vitrine = bootstrap.Modal.getOrCreateInstance($('#lightbox')[0]);
+
+  // Galerie für einen Raum (oder "alle") aufbauen
+  function zeigeSammlung(raum) {
+    const $grid = $('#museum-grid').empty();
+    sichtbar = [];
+
+    $.each(EXPONATE, function (i, e) {
+      if (raum !== 'alle' && e.raum !== raum) return;
+      sichtbar.push(i);
+
+      $('<figure>', { class: 'exponat exponat-' + e.format, tabindex: 0, role: 'button', 'data-index': i, 'aria-label': e.titel + ', Exponat öffnen' })
+        .append(
+          $('<div>', { class: 'exponat-rahmen' }).append(
+            $('<img>', { src: 'img/' + e.bild, alt: e.alt, loading: 'lazy' })
+          ),
+          $('<figcaption>', { class: 'exponat-schild' }).append(
+            $('<span>', { class: 'schild-nr', text: inventarNr(i) + ' · ' + e.raum }),
+            $('<strong>', { text: e.titel }),
+            $('<span>', { class: 'schild-material', text: e.material })
+          )
+        )
+        .css('animation-delay', (sichtbar.length * 60) + 'ms')
+        .appendTo($grid);
     });
+
+    $('.museum-filter .count').text('(' + EXPONATE.length + ')');
+  }
+
+  // Ein Exponat in der Vitrine zeigen
+  function oeffneVitrine(pos) {
+    aktuellPos = (pos + sichtbar.length) % sichtbar.length; // rundherum blättern
+    const i = sichtbar[aktuellPos];
+    const e = EXPONATE[i];
+
+    $('#lightbox-img').attr({ src: 'img/' + e.bild, alt: e.alt });
+    $('#vitrine-nr').text('Inv.-Nr. ' + inventarNr(i) + ' · ' + e.raum);
+    $('#vitrine-titel').text(e.titel);
+    $('#vitrine-datierung').text(e.datierung);
+    $('#vitrine-material').text(e.material);
+    $('#vitrine-fundort').text('Wohnung 4b, ' + e.raum);
+    $('#vitrine-notiz').text('„' + e.notiz + '“');
+    $('#vitrine-zaehler').text('Exponat ' + (aktuellPos + 1) + ' von ' + sichtbar.length);
+    vitrine.show();
+  }
+
+  // Filter-Chips
+  $('.museum-filter').on('click', '.museum-chip[data-raum]', function () {
+    $('.museum-chip[data-raum]').removeClass('is-active');
+    $(this).addClass('is-active');
+    zeigeSammlung($(this).data('raum'));
+  });
+
+  // Zufälliges Exponat aus der aktuellen Auswahl
+  $('#museum-zufall').on('click', function () {
+    oeffneVitrine(Math.floor(Math.random() * sichtbar.length));
+  });
+
+  // Klick oder Enter auf ein Exponat (Event-Delegation, weil die Elemente erst per jQuery entstehen)
+  $('#museum-grid').on('click keydown', '.exponat', function (event) {
+    if (event.type === 'keydown' && event.key !== 'Enter' && event.key !== ' ') return;
+    event.preventDefault();
+    oeffneVitrine(sichtbar.indexOf($(this).data('index')));
+  });
+
+  // Blättern in der Vitrine: Buttons und Pfeiltasten
+  $('#vitrine-zurueck').on('click', function () { oeffneVitrine(aktuellPos - 1); });
+  $('#vitrine-weiter').on('click', function () { oeffneVitrine(aktuellPos + 1); });
+  $(document).on('keydown', function (event) {
+    if (!$('#lightbox').hasClass('show')) return;
+    if (event.key === 'ArrowLeft') oeffneVitrine(aktuellPos - 1);
+    if (event.key === 'ArrowRight') oeffneVitrine(aktuellPos + 1);
+  });
+
+  zeigeSammlung('alle');
 
   // =========================================================
   // a) Zufälliges Katzenbild (The Cat API)

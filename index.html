@@ -93,34 +93,36 @@
       </div>
     </section>
 
-    <!-- Galerie -->
-    <section id="galerie" class="gallery-section">
+    <!-- Galerie: Museum der Kleinigkeiten -->
+    <section id="galerie" class="museum">
       <div class="container">
-        <p class="eyebrow mb-2">Beweisfotos</p>
-        <h2 class="section-title mb-5">Alles echt. Fast alles.</h2>
-        <div class="gallery">
-          <figure class="gallery-item tilt-1" data-caption="Der Plattenspieler. Nicht von 1979, aber er tut so.">
-            <img src="img/plattenspieler.jpg" alt="Retro-Plattenspieler neben einer Zimmerpflanze" loading="lazy" width="1200" height="800">
-            <figcaption>Wohnzimmer, Seite A</figcaption>
-          </figure>
-          <figure class="gallery-item tilt-2 tall" data-caption="Das Dachfenster. Der Stern ist tagsüber im Urlaub.">
-            <img src="img/dachfenster.jpg" alt="Blick durch ein schmales Dachfenster in den Himmel" loading="lazy" width="800" height="1200">
-            <figcaption>der eine Stern (tagsüber)</figcaption>
-          </figure>
-          <figure class="gallery-item tilt-3" data-caption="Die Bialetti. Bitte nicht in den Geschirrspüler, sie ist empfindlich.">
-            <img src="img/bialetti.jpg" alt="Rote Bialetti Moka-Kanne auf einem Gasherd" loading="lazy" width="1200" height="901">
-            <figcaption>Küche, 07:12 Uhr</figcaption>
-          </figure>
-          <figure class="gallery-item tilt-4" data-caption="Herbert. Wurde letzten Dienstag gegossen und sieht entsprechend zufrieden aus.">
-            <img src="img/herbert.jpg" alt="Monstera-Pflanze vor einer hellblauen Wand" loading="lazy" width="1200" height="800">
-            <figcaption>Herbert, Monstera, Dienstagstyp</figcaption>
-          </figure>
-          <figure class="gallery-item tilt-5" data-caption="Gertrud. Kommt um 18:40 Uhr. Tut so, als wäre es Zufall.">
-            <img src="img/gertrud.jpg" alt="Dreifarbige Katze döst auf einem Fenstersims" loading="lazy" width="1200" height="675">
-            <figcaption>Gertrud, 18:41 Uhr</figcaption>
-          </figure>
+        <div class="museum-head">
+          <div>
+            <p class="eyebrow mb-2">Sammlung Wohnung 4b · Dauerausstellung</p>
+            <h2 class="section-title mb-2">Museum der Kleinigkeiten</h2>
+            <p class="museum-intro">Zwölf Exponate aus 48 m². Eintritt frei, Fotografieren erlaubt, Anfassen nur bei Herbert (Dienstag).</p>
+          </div>
+          <div class="museum-ticket" aria-hidden="true">
+            <span>Eintritt</span>
+            <strong>CHF 0.–</strong>
+            <span>Nr. 000484</span>
+          </div>
         </div>
-        <p class="gallery-hint">Klick auf ein Foto für die Grossansicht.</p>
+
+        <div class="museum-filter" role="group" aria-label="Exponate nach Raum filtern">
+          <button type="button" class="museum-chip is-active" data-raum="alle">Alle <span class="count"></span></button>
+          <button type="button" class="museum-chip" data-raum="Wohnzimmer">Wohnzimmer</button>
+          <button type="button" class="museum-chip" data-raum="Küche">Küche</button>
+          <button type="button" class="museum-chip" data-raum="Schlafzimmer">Schlafzimmer</button>
+          <button type="button" class="museum-chip" data-raum="Treppenhaus">Treppenhaus</button>
+          <button type="button" class="museum-chip" data-raum="Bewohner">Bewohner</button>
+          <button type="button" id="museum-zufall" class="museum-chip museum-chip-zufall"><i class="bi bi-shuffle" aria-hidden="true"></i> Zufälliges Exponat</button>
+        </div>
+
+        <!-- Die Exponate werden in app.js aus einer Liste erzeugt -->
+        <div id="museum-grid" class="museum-grid" aria-live="polite"></div>
+
+        <p class="museum-hint">Klick auf ein Exponat für die Vitrine. Mit ← und → blätterst du, mit Esc gehst du zurück in den Flur.</p>
       </div>
     </section>
 
@@ -453,17 +455,41 @@
       <a href="https://unsplash.com/photos/a-room-with-a-skylight-and-a-white-wall-XANoMMqjmNc" target="_blank" rel="noopener">Dachfenster</a> ·
       <a href="https://unsplash.com/photos/red-and-silver-coffee-maker-wdF9uixHV-A" target="_blank" rel="noopener">Bialetti</a> ·
       <a href="https://unsplash.com/photos/a-monstera-plant-sits-in-a-corner-McbXDs7bYNU" target="_blank" rel="noopener">Herbert</a> ·
-      <a href="https://unsplash.com/photos/a-calico-cat-sitting-on-a-window-sill-RkaUK-s43Gc" target="_blank" rel="noopener">Gertrud</a>
+      <a href="https://unsplash.com/photos/a-calico-cat-sitting-on-a-window-sill-RkaUK-s43Gc" target="_blank" rel="noopener">Gertrud</a> ·
+      <a href="https://unsplash.com/photos/8muUTAmcWU4" target="_blank" rel="noopener">Leselampe</a> ·
+      <a href="https://unsplash.com/photos/looking-down-a-wooden-spiral-staircase-with-tiled-walls-FazaevhI74Y" target="_blank" rel="noopener">Treppenhaus</a> ·
+      <a href="https://unsplash.com/photos/white-cassette-tape-close-up-photography-mbGxz7pt0jM" target="_blank" rel="noopener">Kassette</a> ·
+      <a href="https://unsplash.com/photos/a-stack-of-old-books-WO6Xj0Le6vY" target="_blank" rel="noopener">Taschenbücher</a> ·
+      <a href="https://unsplash.com/photos/rows-of-vinyl-records-in-plastic-sleeves-n-iS58QUWTA" target="_blank" rel="noopener">Plattenkiste</a> ·
+      <a href="https://unsplash.com/photos/three-hanged-assorted-color-ceramic-mugs-NEc3YEN1FFw" target="_blank" rel="noopener">Tassen</a>
     </div>
   </footer>
 
-  <!-- Lightbox für die Galerie -->
-  <div class="modal fade" id="lightbox" tabindex="-1" aria-labelledby="lightbox-caption" aria-hidden="true">
+  <!-- Vitrine (Lightbox) für das Museum -->
+  <div class="modal fade" id="lightbox" tabindex="-1" aria-labelledby="vitrine-titel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-xl">
-      <div class="modal-content lightbox-content">
-        <button type="button" class="btn-close btn-close-white lightbox-close" data-bs-dismiss="modal" aria-label="Schliessen"></button>
-        <img id="lightbox-img" alt="">
-        <p id="lightbox-caption" class="lightbox-caption"></p>
+      <div class="modal-content vitrine">
+        <button type="button" class="btn-close btn-close-white vitrine-close" data-bs-dismiss="modal" aria-label="Schliessen"></button>
+        <div class="vitrine-body">
+          <div class="vitrine-bild">
+            <img id="lightbox-img" alt="">
+          </div>
+          <aside class="vitrine-schild">
+            <p class="schild-nr" id="vitrine-nr"></p>
+            <h3 id="vitrine-titel"></h3>
+            <dl class="schild-daten">
+              <dt>Datierung</dt><dd id="vitrine-datierung"></dd>
+              <dt>Material</dt><dd id="vitrine-material"></dd>
+              <dt>Fundort</dt><dd id="vitrine-fundort"></dd>
+            </dl>
+            <p class="schild-notiz" id="vitrine-notiz"></p>
+            <div class="vitrine-nav">
+              <button type="button" class="museum-chip" id="vitrine-zurueck" aria-label="Vorheriges Exponat"><i class="bi bi-arrow-left" aria-hidden="true"></i></button>
+              <span id="vitrine-zaehler"></span>
+              <button type="button" class="museum-chip" id="vitrine-weiter" aria-label="Nächstes Exponat"><i class="bi bi-arrow-right" aria-hidden="true"></i></button>
+            </div>
+          </aside>
+        </div>
       </div>
     </div>
   </div>
